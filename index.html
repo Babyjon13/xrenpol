@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Квадратный контейнер</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Бургер */
+    .burger-menu {
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 50px;
+      height: 97%;
+      left: 20px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+
+    .burger span {
+      display: block;
+      width: 30px;
+      height: 4px;
+      background-color: #A5B0AF;
+      margin: 6px 0;
+      transition: 0.4s;
+      z-index: 2232;
+    }
+
+    .burger.toggle span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    .burger.toggle span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.toggle span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    /* Сайдбар / Меню */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px; /* скрыто за экраном */
+      width: 250px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      gap: 10px;
+      padding-top: 70px;
+      background: linear-gradient(90deg, #3D3D3D 0%, #373737 53.37%, #262626 100%);
+      z-index: 2000;
+      transition: left 0.3s ease;
+    }
+
+    #sidebar.active {
+      left: 0;
+    }
+
+    .face-btn {
+      padding: 10px 15px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .face-btn:hover {
+      background: #555;
+    }
+
+    #control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 200px;
+      height: 200px;
+      background: black;
+      border: 2px solid #dee2e6;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      cursor: grab;
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+
+    #control:active {
+      transform: scale(0.95);
+      cursor: grabbing;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      background-image: url("./img/фактура фон.png");
+    }
+
+    .content-cube {
+      position: absolute;
+      aspect-ratio: 1/1;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      transform-style: preserve-3d;
+    }
+
+    .like-mouse{
+      scale: 0.4;
+    }
+
+    .content-face {
+      position: absolute;
+      background-image: url("./img/фактура куб.jpg");
+      background-size: cover;
+      width: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backface-visibility: hidden;
+      background-color: #333;
+      box-sizing: border-box;
+      transform-origin: center center;
+      
+    }
+
+    #content_1{ background-image: url(img/1.png); background-size: cover; }
+    #content_2{ background-image: url(img/2.png); background-size: cover; }  
+    #content_3{ background-image: url(img/3.png); background-size: cover; }
+    #content_4{ background-image: url(img/4.png); background-size: cover; }
+    #content_5{ background-image: url(img/5.png); background-size: cover; }
+    #content_6{ background-image: url(img/6.png); background-size: cover; }
+
+    .content-face[data-face="front"]   { transform: translateZ(50vw); }
+    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vw); }
+    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vw); }
+    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vw); }
+    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vw); }
+    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vw); }
+
+    .content {
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      z-index: 0;
+    }
+
+    @keyframes scale-down-center {
+      0% { transform: scale(1); }
+      100% { transform: scale(0.4); }
+    }
+
+    @keyframes scale-up-center {
+      0% { transform: scale(0.4); }
+      100% { transform: scale(1); }
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media  (max-width:600px) {
+      .content-face{
+        height: 100%;
+        width: auto;
+      }
+        .content-face[data-face="front"]   { transform: translateZ(50vh); }
+    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vh); }
+    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vh); }
+    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vh); }
+    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vh); }
+    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vh); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Бургер -->
+  <div class="burger-menu" id="burger">
+    <div class="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <svg width="88" height="557" viewBox="0 0 88 557" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.2045 556.313L87.035 515.704V556.292L73.1071 556.313H21.2045ZM0 547.997V507.417L87.035 450.235V490.819L0 547.997ZM0 486.558V445.975L87.035 388.801V429.376L0 486.558ZM0 421.085V380.506L87.035 323.327V363.907L0 421.085ZM0 355.616V315.032L87.035 257.854V298.434L0 355.616ZM0 290.143V249.563L87.035 192.381V232.964L0 290.143ZM0 228.7V188.121L87.035 130.942V171.522L0 228.7ZM0 163.231V122.647L87.035 65.4691V106.053L0 163.231ZM0 97.7577V57.174L87.035 0V40.5795L0 97.7577Z" fill="white"/>
+</svg>
+
+  </div>
+
+  <!-- Боковое меню -->
+  <div id="sidebar">
+    <button class="face-btn" data-face="front">Front</button>
+    <button class="face-btn" data-face="back">Back</button>
+    <button class="face-btn" data-face="right">Right</button>
+    <button class="face-btn" data-face="left">Left</button>
+    <button class="face-btn" data-face="top">Top</button>
+    <button class="face-btn" data-face="bottom">Bottom</button>
+  </div>
+
+  <!-- Малый куб -->
+  <div id="control"></div>
+
+  <!-- Большой куб -->
+  <div id="content-wrapper">
+    <div class="content-cube" id="content-cube">
+      <div class="content-face" data-face="front">
+        <div class="content" id="content_1">content</div>
+      </div>
+      <div class="content-face" data-face="back">
+        <div class="content" id="content_2">contentzxZw</div>
+      </div>
+      <div class="content-face" data-face="right">
+        <div class="content" id="content_3">content</div>
+      </div>
+      <div class="content-face" data-face="left">
+        <div class="content" id="content_4">content</div>
+      </div>
+      <div class="content-face" data-face="top">
+        <div class="content" id="content_5">content</div>
+      </div>
+      <div class="content-face" data-face="bottom">
+        <div class="content" id="content_6">content</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Подключение библиотек -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js "></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js "></script> 
+
+  <!-- JavaScript -->
+<script>
+  // === Three.js setup ===
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(200, 200);
+  const controlContainer = document.getElementById("control");
+  controlContainer.appendChild(renderer.domElement);
+  camera.position.z = 5;
+
+  // === Создание граней куба ===
+  const planeGeometry = new THREE.PlaneGeometry(1.8, 1.8);
+  const materials = [];
+  for (let i = 1; i <= 6; i++) {
+    const canvas = document.createElement("canvas");
+    const size = 512;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#34495e";
+    ctx.fillRect(0, 0, size, size);
+    ctx.font = "bold 200px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#ecf0f1";
+    ctx.fillText(i.toString().padStart(2, "0"), size / 2, size / 2);
+    materials.push(new THREE.MeshStandardMaterial({
+      map: new THREE.CanvasTexture(canvas),
+      side: THREE.DoubleSide
+    }));
+  }
+
+  const cubeGroup = new THREE.Group();
+  const positions = [
+    [0, 0, 0.9], [0, 0, -0.9], [0.9, 0, 0], 
+    [-0.9, 0, 0], [0, 0.9, 0], [0, -0.9, 0]
+  ];
+  const rotations = [
+    [0, 0, 0], [0, Math.PI, 0], [0, Math.PI / 2, 0], 
+    [0, -Math.PI / 2, 0], [Math.PI / 2, 0, 0], [-Math.PI / 2, 0, 0]
+  ];
+  const faceNames = ["front", "back", "right", "left", "top", "bottom"];
+
+  positions.forEach((pos, i) => {
+    const mesh = new THREE.Mesh(planeGeometry, materials[i]);
+    mesh.position.set(...pos);
+    mesh.userData = { face: faceNames[i] };
+    if ([4, 5].includes(i)) {
+      mesh.rotation.x = rotations[i][0];
+      mesh.scale.y = -1;
+    } else {
+      mesh.rotation.y = rotations[i][1];
+    }
+    cubeGroup.add(mesh);
+  });
+  scene.add(cubeGroup);
+
+  // === Освещение ===
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const light = new THREE.DirectionalLight(0xffffff, 0.6);
+  light.position.set(5, 5, 5);
+  scene.add(light);
+
+  // === Управление состоянием ===
+  let isAnimating = false;
+  let currentFace = "front";
+  let isDragging = false;
+  let isTouching = false;
+  let touchStartTime = 0;
+  let previousPosition = { x: 0, y: 0 };
+  const TAP_MAX_DURATION = 300;
+  const TAP_MAX_MOVE = 15;
+
+  // Целевые повороты для граней
+  const faceRotations = {
+    front: { x: 0, y: 0 },
+    right: { x: 0, y: -Math.PI / 2 },
+    back: { x: 0, y: Math.PI },
+    left: { x: 0, y: Math.PI / 2 },
+    top: { x: Math.PI / 2, y: 0 },
+    bottom: { x: -Math.PI / 2, y: 0 }
+  };
+
+  // Функции коррекции угла
+  function adjustAngle(current, target) {
+    let delta = target - current;
+    const twoPi = Math.PI * 2;
+    delta = ((delta % twoPi) + twoPi) % twoPi;
+    if (delta > Math.PI) delta -= twoPi;
+    return current + delta;
+  }
+
+  // === Анимация перехода к грани ===
+  function animateToFace(targetFace) {
+    if (isAnimating || targetFace === currentFace) return;
+    
+    isAnimating = true;
+    const card = document.getElementById('content-cube');
+    const target = faceRotations[targetFace];
+    
+    const adjustedX = adjustAngle(cubeGroup.rotation.x, target.x);
+    const adjustedY = adjustAngle(cubeGroup.rotation.y, target.y);
+    const rotateXDeg = -target.x * (180 / Math.PI);
+    const rotateYDeg = target.y * (180 / Math.PI);
+
+    anime.timeline({
+      easing: 'easeInOutQuad',
+      complete: () => {
+        isAnimating = false;
+        currentFace = targetFace;
+      }
+    })
+    .add({
+      targets: card,
+      scale: 0.4,
+      duration: 400,
+      easing: 'easeInQuad'
+    })
+    .add({
+      targets: [cubeGroup.rotation, card],
+      x: [cubeGroup.rotation.x, adjustedX],
+      y: [cubeGroup.rotation.y, adjustedY],
+      rotateX: rotateXDeg,
+      rotateY: rotateYDeg,
+      duration: 700,
+      easing: 'easeOutBack',
+      change: () => renderer.render(scene, camera)
+    })
+    .add({
+      targets: card,
+      scale: 1,
+      duration: 400,
+      easing: 'easeOutQuad'
+    });
+  }
+
+  // === Обработка кликов мышью ===
+  function handleMouseDown(e) {
+    if (isAnimating) return;
+    isDragging = true;
+    previousPosition = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+  }
+
+  function handleMouseMove(e) {
+    if (!isDragging || isAnimating) return;
+    
+    const dx = e.clientX - previousPosition.x;
+    const dy = e.clientY - previousPosition.y;
+    cubeGroup.rotation.y += dx * 0.01;
+    cubeGroup.rotation.x += dy * 0.01;
+    previousPosition = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+  }
+
+  function handleMouseUp() {
+    isDragging = false;
+  }
+
+  function handleMouseClick(e) {
+    if (isAnimating || isDragging) return;
+    
+    const mouse = new THREE.Vector2(
+      ((e.clientX - controlContainer.getBoundingClientRect().left) / controlContainer.clientWidth) * 2 - 1,
+      -((e.clientY - controlContainer.getBoundingClientRect().top) / controlContainer.clientHeight) * 2 + 1
+    );
+    
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(cubeGroup.children, true);
+    
+    if (intersects.length > 0) {
+      const clickedFace = intersects[0].object.userData.face;
+      if (clickedFace) animateToFace(clickedFace);
+    }
+  }
+
+  // === Обработка сенсорных событий ===
+  function handleTouchStart(e) {
+    if (isAnimating) return;
+    
+    isTouching = true;
+    touchStartTime = Date.now();
+    const touch = e.touches[0];
+    previousPosition = { x: touch.clientX, y: touch.clientY };
+    e.preventDefault();
+  }
+
+  function handleTouchMove(e) {
+    if (!isTouching || isAnimating) return;
+    
+    const touch = e.touches[0];
+    const dx = touch.clientX - previousPosition.x;
+    const dy = touch.clientY - previousPosition.y;
+    
+    if (Math.abs(dx) > TAP_MAX_MOVE || Math.abs(dy) > TAP_MAX_MOVE) {
+      isDragging = true;
+    }
+    
+    if (isDragging) {
+      cubeGroup.rotation.y += dx * 0.01;
+      cubeGroup.rotation.x += dy * 0.01;
+      previousPosition = { x: touch.clientX, y: touch.clientY };
+    }
+    
+    e.preventDefault();
+  }
+
+  function handleTouchEnd(e) {
+    if (!isTouching) return;
+    
+    if (!isDragging && Date.now() - touchStartTime < TAP_MAX_DURATION) {
+      const touch = e.changedTouches[0];
+      const rect = controlContainer.getBoundingClientRect();
+      const mouse = new THREE.Vector2(
+        ((touch.clientX - rect.left) / rect.width) * 2 - 1,
+        -((touch.clientY - rect.top) / rect.height) * 2 + 1
+      );
+      
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(cubeGroup.children, true);
+      
+      if (intersects.length > 0) {
+        const clickedFace = intersects[0].object.userData.face;
+        if (clickedFace) animateToFace(clickedFace);
+      }
+    }
+    
+    isTouching = false;
+    isDragging = false;
+    e.preventDefault();
+  }
+
+  // === Настройка обработчиков ===
+  controlContainer.addEventListener("mousedown", handleMouseDown);
+  window.addEventListener("mousemove", handleMouseMove);
+  window.addEventListener("mouseup", handleMouseUp);
+  controlContainer.addEventListener("click", handleMouseClick);
+  
+  controlContainer.addEventListener("touchstart", handleTouchStart, { passive: false });
+  controlContainer.addEventListener("touchmove", handleTouchMove, { passive: false });
+  controlContainer.addEventListener("touchend", handleTouchEnd);
+
+  // Обработчики кнопок меню
+  document.querySelectorAll('.face-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      animateToFace(button.dataset.face);
+    });
+  });
+
+  // Бургер-меню
+  const burger = document.getElementById('burger');
+  const sidebar = document.getElementById('sidebar');
+  burger.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    burger.classList.toggle('toggle');
+  });
+
+  // === Анимация рендера ===
+  function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+  }
+  animate();
+</script>
+</body>
+</html>
