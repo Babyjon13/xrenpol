@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no"/>
   <title>Квадратный контейнер</title>
   <style>
     * {
@@ -58,7 +58,7 @@
       gap: 10px;
       padding-top: 70px;
       background: linear-gradient(90deg, #3D3D3D 0%, #373737 53.37%, #262626 100%);
-      z-index: 2000;
+      z-index: 1000;
       transition: left 0.3s ease;
     }
 
@@ -119,6 +119,7 @@
       align-items: center;
       z-index: 1;
       transform-style: preserve-3d;
+      will-change:transform;
     }
 
     .like-mouse{
@@ -205,9 +206,7 @@
       <span></span>
       <span></span>
     </div>
-    <svg width="88" height="557" viewBox="0 0 88 557" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M21.2045 556.313L87.035 515.704V556.292L73.1071 556.313H21.2045ZM0 547.997V507.417L87.035 450.235V490.819L0 547.997ZM0 486.558V445.975L87.035 388.801V429.376L0 486.558ZM0 421.085V380.506L87.035 323.327V363.907L0 421.085ZM0 355.616V315.032L87.035 257.854V298.434L0 355.616ZM0 290.143V249.563L87.035 192.381V232.964L0 290.143ZM0 228.7V188.121L87.035 130.942V171.522L0 228.7ZM0 163.231V122.647L87.035 65.4691V106.053L0 163.231ZM0 97.7577V57.174L87.035 0V40.5795L0 97.7577Z" fill="white"/>
-</svg>
+
 
   </div>
 
@@ -372,7 +371,7 @@
       easing: 'easeInQuad'
     })
     .add({
-      targets: [cubeGroup.rotation, card],
+      targets: [cubeGroup.rotation ,card],
       x: [cubeGroup.rotation.x, adjustedX],
       y: [cubeGroup.rotation.y, adjustedY],
       rotateX: rotateXDeg,
