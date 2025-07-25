@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no"/>
+  <title>Квадратный контейнер</title>
+  <style>
+    html {
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Бургер */
+    .burger-menu {
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 50px;
+      height: 97%;
+      left: 20px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+    .burger span {
+      display: block;
+      width: 30px;
+      height: 4px;
+      background-color: #A5B0AF;
+      margin: 6px 0;
+      transition: 0.4s;
+      z-index: 2232;
+    }
+    .burger.toggle span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    .burger.toggle span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.toggle span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    /* Сайдбар / Меню */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      gap: 10px;
+      padding-top: 70px;
+      background: linear-gradient(90deg, #3D3D3D 0%, #373737 53.37%, #262626 100%);
+      z-index: 2000;
+      transition: left 0.3s ease;
+    }
+    #sidebar.active {
+      left: 0;
+    }
+
+    .face-btn {
+      padding: 10px 15px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    .face-btn:hover {
+      background: #555;
+    }
+
+    #control {
+      display: none;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      max-width: 100vh;
+      max-height: 100vh;
+      background-image: url("./img/фактура фон.png");
+    }
+
+    .content-cube {
+      position: absolute;
+      aspect-ratio: 1/1;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .like-mouse {
+      scale: 0.4;
+    }
+
+    .content-face {
+      position: absolute;
+      background-image: url("./img/фактура куб.jpg");
+      background-size: cover;
+      width: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backface-visibility: hidden;
+      background-color: #333;
+      box-sizing: border-box;
+      transform-origin: center center;
+    }
+
+    #content_1 { background-image: url(img/1.png); background-size: cover; }
+    #content_2 { background-image: url(img/2.png); background-size: cover; }  
+    #content_3 { background-image: url(img/3.png); background-size: cover; }
+    #content_4 { background-image: url(img/4.png); background-size: cover; }
+    #content_5 { background-image: url(img/5.png); background-size: cover; }
+    #content_6 { background-image: url(img/6.png); background-size: cover; }
+
+    .content-face[data-face="front"]   { transform: translateZ(50vw); }
+    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vw); }
+    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vw); }
+    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vw); }
+    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vw); }
+    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vw); }
+
+    .content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      z-index: 0;
+    }
+
+    @keyframes scale-down-center {
+      0% { transform: scale(1); }
+      100% { transform: scale(0.4); }
+    }
+    @keyframes scale-up-center {
+      0% { transform: scale(0.4); }
+      100% { transform: scale(1); }
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media  (max-width:600px) {
+      body {
+        overflow: hidden;
+      }
+      .content-face {
+        height: 100%;
+        width: auto;
+      }
+      .content-face[data-face="front"]   { transform: translateZ(50vh); }
+      .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vh); }
+      .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vh); }
+      .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vh); }
+      .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vh); }
+      .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vh); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Бургер -->
+  <div class="burger-menu" id="burger">
+    <div class="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <svg width="88" height="557" viewBox="0 0 88 557" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M21.2045 556.313L87.035 515.704V556.292L73.1071 556.313H21.2045ZM0 547.997V507.417L87.035 450.235V490.819L0 547.997ZM0 486.558V445.975L87.035 388.801V429.376L0 486.558ZM0 421.085V380.506L87.035 323.327V363.907L0 421.085ZM0 355.616V315.032L87.035 257.854V298.434L0 355.616ZM0 290.143V249.563L87.035 192.381V232.964L0 290.143ZM0 228.7V188.121L87.035 130.942V171.522L0 228.7ZM0 163.231V122.647L87.035 65.4691V106.053L0 163.231ZM0 97.7577V57.174L87.035 0V40.5795L0 97.7577Z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Боковое меню -->
+  <div id="sidebar">
+    <button class="face-btn" data-face="front">Front</button>
+    <button class="face-btn" data-face="back">Back</button>
+    <button class="face-btn" data-face="right">Right</button>
+    <button class="face-btn" data-face="left">Left</button>
+    <button class="face-btn" data-face="top">Top</button>
+    <button class="face-btn" data-face="bottom">Bottom</button>
+  </div>
+
+  <!-- Большой куб -->
+  <div id="content-wrapper">
+    <div class="content-cube" id="content-cube">
+      <div class="content-face" data-face="front">
+        <div class="content" id="content_1">content</div>
+      </div>
+      <div class="content-face" data-face="back">
+        <div class="content" id="content_2">contentzxZw</div>
+      </div>
+      <div class="content-face" data-face="right">
+        <div class="content" id="content_3">content</div>
+      </div>
+      <div class="content-face" data-face="left">
+        <div class="content" id="content_4">content</div>
+      </div>
+      <div class="content-face" data-face="top">
+        <div class="content" id="content_5">content</div>
+      </div>
+      <div class="content-face" data-face="bottom">
+        <div class="content" id="content_6">content</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Подключение библиотек -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js "></script>
+
+  <!-- JavaScript -->
+  <script>
+    // === Бургер-меню ===
+    const burger = document.getElementById('burger');
+    const sidebar = document.getElementById('sidebar');
+    burger.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      burger.classList.toggle('toggle');
+    });
+
+    // === Обработчики кнопок меню ===
+    document.querySelectorAll('.face-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const targetFace = button.dataset.face;
+        const card = document.getElementById('content-cube');
+        
+        anime.timeline({
+          easing: 'easeInOutQuad'
+        })
+        .add({
+          targets: card,
+          scale: 0.4,
+          duration: 400,
+          easing: 'easeInQuad'
+        })
+        .add({
+          targets: card,
+          rotateX: targetFace === 'top' ? -90 : targetFace === 'bottom' ? 90 : 0,
+          rotateY: targetFace === 'left' ? -90 : targetFace === 'right' ? 90 : 0,
+          duration: 700,
+          easing: 'easeOutBack'
+        })
+        .add({
+          targets: card,
+          scale: 1,
+          duration: 400,
+          easing: 'easeOutQuad'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Cube Interaction</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      background-image: url("./img/фактура фон.png");
+    }
+
+    #control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 200px;
+      height: 200px;
+      background: black;
+      border: 2px solid #dee2e6;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      cursor: grab;
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+
+    #control:active {
+      transform: scale(0.95);
+      cursor: grabbing;
+    }
+
+    .content-cube {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      perspective: 2000px;
+      will-change: transform;
+    }
+
+    .content-face {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-origin: center center;
+    }
+
+    .content-face[data-face="front"]   { transform: translateZ(450px); }
+    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(450px); }
+    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(450px); }
+    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(450px); }
+    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(450px); }
+    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(450px); }
+
+    .menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    .face-btn {
+      background-color: #34495e;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .face-btn:hover {
+      background-color: #555;
+    }
+
+    .face-btn.active {
+      background-color: yellow;
+      color: black;
+    }
+
+    .content {
+      width: 100vw;
+      height: 100vh;
+      background-color: aqua;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+    }
+
+    .scale-down-center {
+      animation: scale-down-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+
+    @keyframes scale-down-center {
+      0% { transform: scale(1); }
+      100% { transform: scale(0.4); }
+    }
+
+    @keyframes scale-up-center {
+      0% { transform: scale(0.4); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Малый куб -->
+<div id="control"></div>
+
+<!-- Большой куб -->
+<div class="content-cube" id="content-cube">
+  <div class="content-face" data-face="front"><div class="content">Front</div></div>
+  <div class="content-face" data-face="back"><div class="content">Back</div></div>
+  <div class="content-face" data-face="right"><div class="content">Right</div></div>
+  <div class="content-face" data-face="left"><div class="content">Left</div></div>
+  <div class="content-face" data-face="top"><div class="content">Top</div></div>
+  <div class="content-face" data-face="bottom"><div class="content">Bottom</div></div>
+</div>
+
+<!-- Меню с кнопками для выбора граней -->
+<div class="menu">
+  <button class="face-btn" data-face="front">Front</button>
+  <button class="face-btn" data-face="back">Back</button>
+  <button class="face-btn" data-face="right">Right</button>
+  <button class="face-btn" data-face="left">Left</button>
+  <button class="face-btn" data-face="top">Top</button>
+  <button class="face-btn" data-face="bottom">Bottom</button>
+</div>
+
+<!-- Подключение библиотек -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js "></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js "></script>
+
+<!-- Логика Three.js + Anime.js -->
+<script>
+  const controlContainer = document.getElementById("control");
+  const contentCube = document.querySelector(".content-cube");
+
+  // === Three.js Scene Setup ===
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(200, 200);
+  controlContainer.appendChild(renderer.domElement);
+
+  camera.position.z = 5;
+
+  // === Создание текстур для граней ===
+  function createFaceTexture(text, bgColor = "#34495e", textColor = "#ecf0f1") {
+    const canvas = document.createElement("canvas");
+    const size = 512;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, size, size);
+    ctx.font = "bold 200px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = textColor;
+    ctx.fillText(text, size / 2, size / 2);
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  // Материалы
+  const materials = [];
+  for (let i = 1; i <= 6; i++) {
+    materials.push(new THREE.MeshStandardMaterial({
+      map: createFaceTexture(i.toString().padStart(2, "0")),
+      side: THREE.DoubleSide
+    }));
+  }
+
+  const planeGeometry = new THREE.PlaneGeometry(1.8, 1.8);
+  const faceNames = ["front", "back", "right", "left", "top", "bottom"];
+  const positions = [
+    [0, 0, 0.9],
+    [0, 0, -0.9],
+    [0.9, 0, 0],
+    [-0.9, 0, 0],
+    [0, 0.9, 0],
+    [0, -0.9, 0]
+  ];
+  const rotations = [
+    [0, 0, 0],
+    [0, Math.PI, 0],
+    [0, Math.PI / 2, 0],
+    [0, -Math.PI / 2, 0],
+    [Math.PI / 2, 0, 0],
+    [-Math.PI / 2, 0, 0]
+  ];
+
+  const cubeGroup = new THREE.Group();
+
+  positions.forEach((pos, i) => {
+    const mesh = new THREE.Mesh(planeGeometry, materials[i]);
+    mesh.position.set(...pos);
+
+    if ([4, 5].includes(i)) {
+      mesh.rotation.x = rotations[i][0];
+      mesh.scale.y = -1;
+    } else {
+      mesh.rotation.y = rotations[i][1];
+    }
+
+    mesh.userData = { face: faceNames[i] };
+    cubeGroup.add(mesh);
+  });
+
+  scene.add(cubeGroup);
+
+  // Освещение
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  directionalLight.position.set(5, 5, 5);
+  scene.add(directionalLight);
+
+  // Анимация рендера
+  function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Вращение мышью
+  let isDragging = false;
+  let previousMouse = { x: 0, y: 0 };
+
+  controlContainer.addEventListener("mousedown", e => {
+    isDragging = true;
+    previousMouse = { x: e.clientX, y: e.clientY };
+  });
+
+  window.addEventListener("mouseup", () => isDragging = false);
+  window.addEventListener("mousemove", e => {
+    if (!isDragging) return;
+    const dx = e.clientX - previousMouse.x;
+    const dy = e.clientY - previousMouse.y;
+    cubeGroup.rotation.y += dx * 0.01;
+    cubeGroup.rotation.x += dy * 0.01;
+    previousMouse = { x: e.clientX, y: e.clientY };
+  });
+
+  // === Переменные анимации ===
+  let isAnimating = false;
+  let currentFace = "front";
+
+  const faceRotations = {
+    front: { x: 0, y: 0 },
+    right: { x: 0, y: -Math.PI / 2 },
+    back: { x: 0, y: Math.PI },
+    left: { x: 0, y: Math.PI / 2 },
+    top: { x: Math.PI / 2, y: 0 },
+    bottom: { x: -Math.PI / 2, y: 0 }
+  };
+
+  function adjustAngle(current, target) {
+    let delta = target - current;
+    const twoPi = Math.PI * 2;
+    delta = ((delta % twoPi) + twoPi) % twoPi;
+    if (delta > Math.PI) delta -= twoPi;
+    return current + delta;
+  }
+
+  function adjustDegree(current, target) {
+    let delta = target - current;
+    delta = ((delta % 360) + 360) % 360;
+    if (delta > 180) delta -= 360;
+    return current + delta;
+  }
+
+  let currentCSSRotation = { x: 0, y: 0 };
+
+  // Функция обновления кнопок меню
+  function updateMenuButtons(activeFace) {
+    document.querySelectorAll('.face-btn').forEach(btn => btn.classList.remove('active'));
+    if (activeFace) {
+      const targetButton = document.querySelector(`.face-btn[data-face="${activeFace}"]`);
+      if (targetButton) {
+        targetButton.classList.add('active');
+      }
+    }
+  }
+
+  // Обработчики кнопок меню
+  document.querySelectorAll('.face-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      animateToFace(button.dataset.face);
+    });
+  });
+
+  // Анимация перехода к грани
+  function animateToFace(targetFace) {
+    if (isAnimating || targetFace === currentFace) return;
+
+    isAnimating = true;
+    const card = document.getElementById('content-cube');
+
+    const target = faceRotations[targetFace];
+    const adjustedX = adjustAngle(cubeGroup.rotation.x, target.x);
+    const adjustedY = adjustAngle(cubeGroup.rotation.y, target.y);
+    const rotateXDeg = -target.x * (180 / Math.PI);
+    const rotateYDeg = target.y * (180 / Math.PI);
+
+    anime.timeline({
+      easing: 'easeInOutQuad',
+      complete: () => {
+        isAnimating = false;
+        currentFace = targetFace;
+        currentCSSRotation.x = rotateXDeg;
+        currentCSSRotation.y = rotateYDeg;
+      }
+    })
+    .add({
+      targets: card,
+      scale: 0.4,
+      duration: 400,
+      easing: 'easeInQuad'
+    })
+    .add({
+      targets: [cubeGroup.rotation, card],
+      x: [cubeGroup.rotation.x, adjustedX],
+      y: [cubeGroup.rotation.y, adjustedY],
+      rotateX: rotateXDeg,
+      rotateY: rotateYDeg,
+      duration: 700,
+      easing: 'easeOutBack'
+    })
+    .add({
+      targets: card,
+      scale: 1,
+      duration: 400,
+      easing: 'easeOutQuad'
+    });
+  }
+
+  // Обработка кликов по грани малого куба
+  controlContainer.addEventListener("click", (e) => {
+    if (isAnimating) return;
+
+    const mouse = new THREE.Vector2();
+    const rect = controlContainer.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(cubeGroup.children, true);
+
+    if (intersects.length > 0) {
+      let obj = intersects[0].object;
+
+      while (obj && !obj.userData?.face) {
+        obj = obj.parent;
+      }
+
+      if (obj && obj.userData.face && obj.userData.face !== currentFace) {
+        animateToFace(obj.userData.face);
+      }
+    }
+  });
+
+  // Вызов при загрузке страницы
+  window.addEventListener("load", () => {
+    updateMenuButtons(currentFace);
+  });
+
+  // Функция анимации поворота большого куба
+  function handleMouseClick(e) {
+    if (isAnimating) return;
+
+    const mouse = new THREE.Vector2();
+    const rect = controlContainer.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(cubeGroup.children, true);
+
+    if (intersects.length > 0) {
+      let obj = intersects[0].object;
+      while (obj && !obj.userData?.face) {
+        obj = obj.parent;
+      }
+
+      if (obj && obj.userData.face && obj.userData.face !== currentFace) {
+        const clickedFace = obj.userData.face;
+        currentFace = clickedFace;
+        animateToFace(clickedFace);
+        updateMenuButtons(clickedFace);
+      }
+    }
+  }
+
+  // Добавляем обработчик кликов на малый куб
+  controlContainer.addEventListener("click", handleMouseClick);
+</script>
+
+</body>
+</html>

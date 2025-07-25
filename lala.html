@@ -121,12 +121,11 @@
       position: absolute;
       top: 20px;
       right: 20px;
+      width: 200px;
       height: 200px;
-      width: auto;
-      aspect-ratio: 1/1;
       background: black;
       border: 2px solid #dee2e6;
-      border-radius: 1vw;
+      border-radius: 15px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
       cursor: grab;
       transition: transform 0.2s;
@@ -137,11 +136,7 @@
       transform: scale(0.95);
       cursor: grabbing;
     }
-    #control canvas{
-      width: 100%;
-      display: block;
-      aspect-ratio: 1/1;
-    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -233,7 +228,7 @@
       z-index: 20;
       background-color: black;
       display: flex;
-      padding:  5vw 2vw;
+      padding:  3vw 2vw;
       width: 100%; 
       height: 73%;
       flex-direction: column;
@@ -263,17 +258,6 @@
     ol{
       padding-left: 23px;
       font-size: 1vw;
-    }
-
-    #header_2{
-      height: 100%;
-      clip-path: url(#header2ClipPath);
-    }
-    .ockontovka svg{
-      z-index: 1;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
     }
   </style>
 </head>
@@ -317,7 +301,14 @@
               Осуществляем технические переводы с английского. А также занимаемся наполнением каталогов, баз данных.
             </p>
           </div>
-
+<svg width="0" height="0">
+  <defs>
+    <clipPath id="headerClip" clipPathUnits="objectBoundingBox">
+      <!-- Новые координаты (примерные, уточните по вашей форме) -->
+      <path d="M0.001,0 H1 V0.82 C1,0.84 0.99,0.86 0.97,0.87 L0.81,0.98 C0.79,0.99 0.76,1 0.73,1 H0.001 V0 Z"/>
+    </clipPath>
+  </defs>
+</svg>
           <div class="info">
 
             <strong>КОНТАКТЫ:</strong>
@@ -326,32 +317,41 @@
               <li>+71523243123</li>
               <li>Divizion.org</li>
             </ol>
-
+            <svg width="0" height="0">
+  <defs>
+    <clipPath id="infoClip" clipPathUnits="objectBoundingBox">
+<path fill-rule="evenodd" clip-rule="evenodd" d="
+  M0.999060 0.998888
+  V0.601171
+  C0.999060 0.538865, 0.989126 0.485241, 0.970203 0.441179
+  L0.806678 0.066266
+  C0.787494 0.022215, 0.764131 0, 0.737000 0
+  H0.001124
+  V0.499444
+  V0.998888
+  H0.999060
+  Z"
+/>
+    </clipPath>
+  </defs>
+</svg>
           </div>
         </div>
         </div>
       </div>
       <div class="content-face" data-face="back">
         <div class="content" id="content_2"><div class="garbage">
-          <div class="ockontovka">
-          <div class="header" id="header_2">
+          <div class="header">
             <h1>02</h1>
             <strong>ПОДГОТОВКА МАРКЕТИНГОВЫХ МАТЕРИАЛОВ</strong>
             <p>Маркетинговая продукция позволяет улучшить коммуникацию как внутри вашей организации, так и за ее пределами, увеличить приток клиентов и сделать вас узнаваемыми в вашей нише. У нас вы сможете заказать широкую номенклатуру материалов: 
               </p>
-              
-              <svg  viewBox="0 0 777 205" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M776.407 0.508194C776.407 21.6838 768.878 39.9248 753.97 54.8977L627.049 182.368C612.141 197.345 593.974 204.902 572.886 204.902H0.82959V187.324H572.894C581.212 187.324 588.815 185.894 595.659 183.047C602.441 180.229 608.8 175.849 614.681 169.946L741.601 42.4717L776.407 0.508194Z" fill="#FFC838"/>
-  </svg>
-            </div>
-</div>
+          </div>
         </div>
       </div>
       </div>
       <div class="content-face" data-face="right">
-        <div class="content" id="content_3">content            
-          
-</div>
+        <div class="content" id="content_3">content</div>
       </div>
       <div class="content-face" data-face="left">
         <div class="content" id="content_4">content</div>
@@ -636,57 +636,5 @@
   }
   animate();
 </script>
-
-
-<svg width="0" height="0">
-  <defs>
-    <clipPath id="customCliper" clipPathUnits="objectBoundingBox">
-      <path d="
-        M0.001 0 H1 V1 C1 0.5 0.989 0.849 0.972 0.864 
-        L0.675 1 C0.652 1.031 0.622 1.048 0.599 1.048 H0 
-        L0 0.984 H0.599 C0.622 0.984 0.652 0.991 0.675 0.998 
-       Z
-      "/>
-        </clipPath>
-  </defs>
-</svg>
-
-
-<svg width="0" height="0">
-  <defs>
-    <clipPath id="headerClip" clipPathUnits="objectBoundingBox">
-      <!-- Новые координаты (примерные, уточните по вашей форме) -->
-      <path d="M0.001,0 H1 V0.82 C1,0.84 0.99,0.86 0.97,0.87 L0.81,0.98 C0.79,0.99 0.76,1 0.73,1 H0.001 V0 Z"/>
-    </clipPath>
-  </defs>
-</svg>
-
-
-            <svg width="0" height="0">
-  <defs>
-    <clipPath id="infoClip" clipPathUnits="objectBoundingBox">
-<path fill-rule="evenodd" clip-rule="evenodd" d="
-  M0.999060 0.998888
-  V0.601171
-  C0.999060 0.538865, 0.989126 0.485241, 0.970203 0.441179
-  L0.806678 0.066266
-  C0.787494 0.022215, 0.764131 0, 0.737000 0
-  H0.001124
-  V0.499444
-  V0.998888
-  H0.999060
-  Z"
-/>
-    </clipPath>
-  </defs>
-</svg>
-
-<svg width="0" height="0">
-  <defs>
-    <clipPath id="header2ClipPath" clipPathUnits="objectBoundingBox">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.00106 0H0.999V0.812C0.999 0.832 0.989 0.848 0.97 0.862L0.807 0.98C0.778 0.993 0.764 1 0.737 1H0.00106V0Z" />
-    </clipPath>
-  </defs>
-</svg>
 </body>
 </html>
