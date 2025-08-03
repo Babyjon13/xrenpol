@@ -1,0 +1,247 @@
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+    @font-face {
+    font-family: Porsche;
+    src: url("./fonts/Porsche.ttf");
+    font-style: normal;
+  }
+
+
+    .content-face[data-face="front"]   { transform: translateZ(50vw); }
+    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vw); }
+    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vw); }
+    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vw); }
+    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vw); }
+    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vw); }
+
+        * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .burger-menu {
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 50px;
+      height: 97%;
+      left: 20px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+
+    .burger span {
+      display: block;
+      width: 30px;
+      height: 4px;
+      background-color: #A5B0AF;
+      margin: 6px 0;
+      transition: 0.4s;
+      z-index: 2232;
+    }
+
+    .burger.toggle span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    .burger.toggle span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.toggle span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -20vw;
+      width: 20vw;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+      padding-top: 70px;
+      background: linear-gradient(90deg, #3D3D3D 0%, #373737 53.37%, #262626 100%);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      border-radius:  0 2vw 2vw 0;
+    }
+
+    #sidebar.active {
+      left: 0;
+    }
+
+    .face-btn {
+      padding: 10px 15px;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    .face-btn:hover {
+      background: #555;
+    }
+
+    .face-btn:active{
+      background: yellow;
+    }
+
+    #control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      height: 200px;
+      width: auto;
+      aspect-ratio: 1/1;
+      background: black;
+      border: 2px solid #dee2e6;
+      border-radius: 1vw;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      cursor: grab;
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+
+    #control:active {
+      transform: scale(0.95);
+      cursor: grabbing;
+    }
+
+    #control canvas{
+      width: 100%;
+      display: block;
+      aspect-ratio: 1/1;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-image: url("./img/фактура_фон.png");
+      font-family: 'Roboto';
+    }
+
+    .content-cube {
+      position: absolute;
+      aspect-ratio: 1/1;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      transform-style: preserve-3d;
+      will-change:transform;
+    }
+
+    .content-face {
+      position: absolute;
+      background-image: url("./img/фактура_куб.jpg");
+      background-size: cover;
+      width: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backface-visibility: hidden;
+      background-color: #333;
+      box-sizing: border-box;
+      transform-origin: center center;
+    }
+
+    #content_1{ background-image: url(img/1.png); background-size: cover; }
+    #content_2{ background-image: url(img/2.png); background-size: cover; }  
+    #content_3{ background-image: url(img/3.png); background-size: cover; }
+    #content_4{ background-image: url(img/4.png); background-size: cover; }
+    #content_5{ background-image: url(img/5.png); background-size: cover; }
+    #content_6{ background-image: url(img/6.png); background-size: cover; }
+
+    .content {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      padding-left: 70px;
+      background-color: black;
+      z-index: 0;
+      color: white;
+    }
+    
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .containerB{
+        background-color: #FFC838;
+        color: black;
+        width: fit-content;
+        height: fit-content;
+        font-size: 2vw;
+        padding: 3vh 6vw;
+        clip-path: polygon(12% 0,100% 0,100% 20%,88% 100%,0 100%,0 85% );
+    }
+
+
+/* PAGE 1 */
+
+    #container_1{
+        max-width: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1%;
+    }
+
+    #head_1{
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2vw;
+        padding-top:0;
+        height: 73%;
+        gap: 2%;
+        clip-path: polygon(0 0, 100% 0,100% 75%,75% 100%,0 100%);
+        border-radius: 0.4vw;
+    }
+
+    #head_1 h1{
+        font-family: Porsche;
+        font-size: 12vw;
+    }
+
+    #head_1 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: justify;
+    }
+
+    #head_1 p{
+        font-size: 1.1vw;
+    }
+
+    #body_1{
+        background-color: #FFC838;
+        color: black;
+        flex-grow: 1;
+        padding: 2vw;
+        width: 100%;
+        clip-path: polygon(0 0,75% 0,100% 50%,100% 100%,0 100%);
+        border-radius: 0.4vw;
+    }
+
+    #body_1 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: justify;
+    }
