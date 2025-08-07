@@ -95,15 +95,13 @@
 
     #control {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      height: 200px;
-      width: auto;
+      top: 2vh;
+      right: 2vw;
+      height: 20vh;
+      width: 20vh;
       aspect-ratio: 1/1;
       background: black;
-      border: 2px solid #dee2e6;
       border-radius: 1vw;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
       cursor: grab;
       transition: transform 0.2s;
       z-index: 1000;
@@ -182,10 +180,16 @@
     .containerB{
         background-color: #FFC838;
         color: black;
-        width: fit-content;
         height: fit-content;
-        font-size: 2vw;
-        padding: 3vh 6vw;
+        font-size: 1.2vw;
+        flex:1;
+        padding: 3vh 5vw;
+        font-family: Roboto;
+        font-weight: 800;
+        letter-spacing: -1.1%;
+        text-transform: uppercase;
+        text-align: center;
+        flex-basis: 20vw;
         clip-path: polygon(12% 0,100% 0,100% 20%,88% 100%,0 100%,0 85% );
     }
 
@@ -244,4 +248,53 @@
         font-size: 2vw;
         font-weight: 800;
         text-align: justify;
+    }
+
+
+    /* PAGE 2 */
+    #container_2{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2vw;
+    }
+
+    #header_2{
+      background-color: black ;
+      max-width: 30%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      height: max-content;
+      padding: 2vw;
+      padding-top: 0;
+      gap: 1vw;
+      flex-grow: 1;
+    }
+
+    #header_2 h1{
+      font-family: 'Porsche';
+      font-size: 10vw;
+    }
+
+    #header_2 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: justify;
+    }
+
+    #header_2 p{
+        font-family: 'Roboto';
+        font-size: 1.2vw;
+        text-align: justify;
+    }
+
+    #body_2{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vw;
+      padding-bottom: 1vw;
+      align-items: center;
+
     }
