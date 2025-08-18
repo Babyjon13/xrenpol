@@ -23,12 +23,12 @@ for (let i = 1; i <= 6; i++) {
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#34495e";
+  ctx.fillStyle = "rgba(136, 147, 147, 1)";
   ctx.fillRect(0, 0, size, size);
-  ctx.font = "bold 200px Arial";
+  ctx.font = "bold 200px Roboto";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = "#ecf0f1";
+  ctx.fillStyle = "#ffffff";
   ctx.fillText(i.toString().padStart(2, "0"), size / 2, size / 2);
   
   materials.push(new THREE.MeshStandardMaterial({
