@@ -51,7 +51,7 @@
     body {
       margin: 0;
       overflow: hidden;
-      background-image: url("./img/фактура_фон.png");
+      background-image: url("./img/фактура_фон.webp");
       font-family: 'Roboto';
     }
 
@@ -84,12 +84,12 @@
       transform-origin: center center;
     }
 
-    #content_1{ background-image: url(img/1.png); background-size: cover; }
-    #content_2{ background-image: url(img/2.png); background-size: cover; }  
-    #content_3{ background-image: url(img/3.png); background-size: cover; }
-    #content_4{ background-image: url(img/4.png); background-size: cover; }
-    #content_5{ background-image: url(img/5.png); background-size: cover; }
-    #content_6{ background-image: url(img/6.png); background-size: cover; }
+    #content_1{ background-image: url(img/1.webp); background-size: cover; }
+    #content_2{ background-image: url(img/2.webp); background-size: cover; }  
+    #content_3{ background-image: url(img/3.webp); background-size: cover; }
+    #content_4{ background-image: url(img/4.webp); background-size: cover; }
+    #content_5{ background-image: url(img/5.webp); background-size: cover; }
+    #content_6{ background-image: url(img/6.webp); background-size: cover; }
 
     .content {
       width: 100vw;
