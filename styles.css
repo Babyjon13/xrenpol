@@ -1,0 +1,445 @@
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+    @font-face {
+    font-family: Porsche;
+    src: url("./fonts/Porsche.ttf");
+    font-style: normal;
+  }
+
+
+    .content-face[data-face="front"]   { transform: translateZ(50vw); }
+    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vw); }
+    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vw); }
+    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vw); }
+    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vw); }
+    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vw); }
+
+        * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto';
+      
+    }
+
+
+    #control {
+      position: absolute;
+      top: 2vh;
+      right: 2vw;
+      height: 20vh;
+      width: 20vh;
+      aspect-ratio: 1/1;
+      background: black;
+      border-radius: 1vw;
+      cursor: grab;
+      transition: transform 0.2s;
+      z-index: 1000;
+    }
+
+    #control:active {
+      transform: scale(0.95);
+      cursor: grabbing;
+    }
+
+    #control canvas{
+      width: 100%;
+      display: block;
+      aspect-ratio: 1/1;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-image: url("./img/фактура_фон.webp");
+      font-family: 'Roboto';
+    }
+
+    .content-cube {
+      position: absolute;
+      aspect-ratio: 1/1;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      transform-style: preserve-3d;
+      will-change:transform;
+    }
+
+    .content-face {
+      position: absolute;
+      background-image: url("./img/фактура_куб.jpg");
+      background-size: cover;
+      width: 100%;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backface-visibility: hidden;
+      background-color: #333;
+      box-sizing: border-box;
+      transform-origin: center center;
+    }
+
+    #content_1{ background-image: url(img/1.webp); background-size: cover; }
+    #content_2{ background-image: url(img/2.webp); background-size: cover; }  
+    #content_3{ background-image: url(img/3.webp); background-size: cover; }
+    #content_4{ background-image: url(img/4.webp); background-size: cover; }
+    #content_5{ background-image: url(img/5.webp); background-size: cover; }
+    #content_6{ background-image: url(img/6.webp); background-size: cover; }
+
+    .content {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      padding-left: 70px;
+      background-color: black;
+      z-index: 0;
+      color: white;
+    }
+    
+    button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .containerB{
+        background-color: #FFC838;
+        color: black;
+        display: flex;
+        font-size: 1.1vw;
+        width: 20%;
+        height: 50%;
+        padding: 2vw;
+        align-items: center;
+        font-family: Roboto;
+        font-weight: 800;
+        letter-spacing: -1.1%;
+        text-transform: uppercase;
+        text-align: center;
+        flex-basis: 20vw;
+        justify-content: center;
+        clip-path: polygon(12% 0,100% 0,100% 20%,88% 100%,0 100%,0 85% );
+    }
+
+
+/* PAGE 1 */
+
+    #container_1{
+        max-width: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1%;
+    }
+
+    #head_1{
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2vw;
+        padding-top:0;
+        height: 73%;
+        gap: 2%;
+        clip-path: polygon(0 0, 100% 0,100% 75%,75% 100%,0 100%);
+        border-radius: 0.4vw;
+    }
+
+    #head_1 h1{
+        font-family: Porsche;
+        font-size: 12vw;
+    }
+
+    #head_1 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: justify;
+    }
+
+    #head_1 p{
+        font-size: 1.1vw;
+    }
+
+    #body_1{
+        background-color: #FFC838;
+        color: black;
+        flex-grow: 1;
+        padding: 2vw;
+        width: 100%;
+        clip-path: polygon(0 0,75% 0,100% 50%,100% 100%,0 100%);
+        border-radius: 0.4vw;
+    }
+
+    #body_1 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: justify;
+    }
+
+
+    /* PAGE 2 */
+    #container_2{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2vw;
+    }
+
+    #header_2{
+      background-color: black ;
+      max-width: 30%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+      padding: 2vw;
+      padding-top: 0;
+      gap: 1vw;
+      flex-grow: 1;
+    }
+
+    #header_2 h1{
+      font-family: 'Porsche';
+      font-size: 10vw;
+    }
+
+    #header_2 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: justify;
+    }
+
+    #header_2 p{
+        font-family: 'Roboto';
+        font-size: 1.2vw;
+        text-align: justify;
+    }
+
+    #body_2{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vw;
+      padding-bottom: 1vw;
+      align-items: center;
+      min-height: 10%;
+      max-height: 20%;
+      max-width: 70%;
+      margin-bottom: 2vh;
+    }
+
+    .dop_lec2{
+      display: flex;
+      flex-grow: 1;
+    }
+    #material{
+      display: flex;
+      flex-direction: column;
+      gap: 2vh;
+      padding-top: 7vh;
+      padding-left: 2vw;
+      width: 55%;
+    }
+    ul{
+      list-style-position: inside;
+    }
+
+    /* PAGE 3 */
+     #container_3{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2vw;
+    }
+
+    #header_3{
+      background-color: black ;
+      max-width: 30%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      height: 100%;
+      padding: 2vw;
+      padding-top: 0;
+      gap: 1vw;
+      flex-grow: 1;
+    }
+
+    #header_3 h1{
+      font-family: 'Porsche';
+      font-size: 10vw;
+    }
+
+    #header_3 h2{
+        font-family: 'Roboto';
+        font-size: 2vw;
+        font-weight: 800;
+        text-transform: uppercase;
+        text-align: justify;
+    }
+
+    #header_3 p{
+        font-family: 'Roboto';
+        font-size: 1.2vw;
+        text-align: justify;
+    }
+
+    #body_3{
+      min-width: 50%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1vw;
+      padding-bottom: 1vw;
+      align-items: center;
+      margin-bottom: 2vh;
+      flex: 1;
+      max-height: 90%;
+    }
+
+    .sub3{
+      display: flex;
+      margin-right: 2vw;
+    }
+
+    .sub3 p{
+      font-weight: 400;
+      font-style: Italic;
+      letter-spacing: -1%;
+      text-align: justify;
+      padding-left: 5vw;
+      margin-top: 1vw;
+    }
+
+    #ul_3{
+      column-count: 2;
+      column-gap: 0;
+      width: 70%;
+      list-style-position: unset;
+      margin-left: 2vw;
+    }
+    #material_3{
+      display: flex;
+      gap: 2vh;
+      font-size: 1.3vw;
+
+    }
+
+
+
+    /* NAV */
+
+    .category{
+      width: 100%;
+      background: rgba(80, 80, 80, 1);
+      color: white;
+      display: flex;
+      justify-content: center;
+      }
+    #category_1{
+      display: grid;
+      align-items: center;
+      grid-template-columns:1fr auto 1fr ;
+    }
+    #category_1 .face-btn{
+      justify-self: start;
+    }
+    .face-btn{
+      color: white;
+      font-weight: 800;
+      font-size: 100%;
+    }
+
+    #sidebar{
+      color: white;
+      padding: 2%;
+    }
+
+        .burger-menu {
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 50px;
+      left: 20px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+
+    .burger span {
+      display: block;
+      width: 30px;
+      height: 4px;
+      background-color: #A5B0AF;
+      margin: 6px 0;
+      transition: 0.4s;
+      z-index: 2232;
+    }
+
+    .burger.toggle span:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    .burger.toggle span:nth-child(2) {
+      opacity: 0;
+    }
+    .burger.toggle span:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: -50vw;
+      width: 20vw;
+      min-width: fit-content;
+      height: 100%;
+      background: linear-gradient(90deg, #3D3D3D 0%, #373737 53.37%, #262626 100%);
+      z-index: 1000;
+      transition: left 0.3s ease;
+      border-radius:  0 2vw 2vw 0;
+    }
+
+    #sidebar.active {
+      left: 0;
+    }
+
+    #likemen{
+      display: flex;
+      justify-content: end;
+      padding-top: 12px;
+      margin-right: 1vw;
+      padding-bottom: 50%;
+    }
+
+    .navigation{
+      display: flex;
+      flex-direction: column;
+      gap:4vh;
+    }
+    #page{
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 40%;
+      height: fit-content;
+    }
+
+    #page p{
+      width: fit-content;
+      word-wrap: break-word;
+    }
+
+    #groupka{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      gap: 1vh;
+    }

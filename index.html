@@ -1,281 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Квадратный контейнер</title>
-<style>
-    @font-face {
-    font-family: Porsche;
-    src: url("./fonts/Porsche\ Regular_0.ttf");
-  }
-
-    @font-face {
-      font-family: Roboto;
-      src: url("fonts/Roboto-Regular.ttf");
-    }
-
-    h1{
-      font-family: Porsche;
-      font-size: 10vw;
-    }
-
-    h2,p{
-      font-family: Roboto;
-      font-size: 1vw;
-      text-align:inherit;
-    }
-
-    h2{
-      font-size: 2vw;
-      text-align: justify;
-      font-weight: 900;
-      font-family: Roboto;
-      font-style: ExtraBold;
-
-    }
-
-    strong{
-      font-size: 1.64vw;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    .burger-menu {
-      position: fixed;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      margin-top: 20px;
-      margin-bottom: 50px;
-      height: 97%;
-      left: 20px;
-      cursor: pointer;
-      z-index: 2000;
-    }
-
-    .burger span {
-      display: block;
-      width: 30px;
-      height: 4px;
-      background-color: #A5B0AF;
-      margin: 6px 0;
-      transition: 0.4s;
-      z-index: 2232;
-    }
-
-    .burger.toggle span:nth-child(1) {
-      transform: rotate(-45deg) translate(-5px, 6px);
-    }
-    .burger.toggle span:nth-child(2) {
-      opacity: 0;
-    }
-    .burger.toggle span:nth-child(3) {
-      transform: rotate(45deg) translate(-5px, -6px);
-    }
-
-    #sidebar {
-      position: fixed;
-      top: 0;
-      left: -20vw;
-      width: 20vw;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 10px;
-      padding-top: 70px;
-      background: linear-gradient(90deg, #3D3D3D 0%, #373737 53.37%, #262626 100%);
-      z-index: 1000;
-      transition: left 0.3s ease;
-      border-radius:  0 20px 20px 0;
-    }
-
-    #sidebar.active {
-      left: 0;
-    }
-
-    .face-btn {
-      padding: 10px 15px;
-      background: #333;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s;
-    }
-
-    .face-btn:hover {
-      background: #555;
-    }
-
-    .face-btn:active{
-      background: yellow;
-    }
-
-    #control {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      height: 200px;
-      width: auto;
-      aspect-ratio: 1/1;
-      background: black;
-      border: 2px solid #dee2e6;
-      border-radius: 1vw;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-      cursor: grab;
-      transition: transform 0.2s;
-      z-index: 1000;
-    }
-
-    #control:active {
-      transform: scale(0.95);
-      cursor: grabbing;
-    }
-    #control canvas{
-      width: 100%;
-      display: block;
-      aspect-ratio: 1/1;
-    }
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
-      background-image: url("./img/фактура фон.png");
-    }
-
-    .content-cube {
-      position: absolute;
-      aspect-ratio: 1/1;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(255, 255, 255, 0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-      transform-style: preserve-3d;
-      will-change:transform;
-    }
-
-    .like-mouse{
-      scale: 0.4;
-    }
-
-    .content-face {
-      position: absolute;
-      background-image: url("./img/фактура куб.jpg");
-      background-size: cover;
-      width: 100%;
-      aspect-ratio: 1/1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      backface-visibility: hidden;
-      background-color: #333;
-      box-sizing: border-box;
-      transform-origin: center center;
-      
-    }
-
-    #content_1{ background-image: url(img/1.png); background-size: cover; }
-    #content_2{ background-image: url(img/2.png); background-size: cover; }  
-    #content_3{ background-image: url(img/3.png); background-size: cover; }
-    #content_4{ background-image: url(img/4.png); background-size: cover; }
-    #content_5{ background-image: url(img/5.png); background-size: cover; }
-    #content_6{ background-image: url(img/6.png); background-size: cover; }
-
-    .content-face[data-face="front"]   { transform: translateZ(50vw); }
-    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vw); }
-    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vw); }
-    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vw); }
-    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vw); }
-    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vw); }
-
-    .content {
-      width: 100vw;
-      height: 100vh;
-      padding-left: 70px;
-      background-color: black;
-      font-size: 2rem;
-      z-index: 0;
-      gap: 70px;
-      color: white;
-      display: flex;
-    }
-
-    button {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-    }
-
-    @media  (max-width:600px) {
-      .content-face{
-        height: 100%;
-        width: auto;
-      }
-        .content-face[data-face="front"]   { transform: translateZ(50vh);  }
-    .content-face[data-face="back"]    { transform: rotateY(180deg) translateZ(50vh); }
-    .content-face[data-face="right"]   { transform: rotateY(90deg) translateZ(50vh); }
-    .content-face[data-face="left"]    { transform: rotateY(-90deg) translateZ(50vh); }
-    .content-face[data-face="top"]     { transform: rotateX(90deg) translateZ(50vh); }
-    .content-face[data-face="bottom"]  { transform: rotateX(-90deg) translateZ(50vh); }
-    }
-
-    .header{
-      position: relative;
-      z-index: 20;
-      background-color: black;
-      display: flex;
-      padding:  5vw 2vw;
-      width: 100%; 
-      height: 73%;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      text-align: justify;
-      clip-path: url(#headerClip);
-    }
-
-    .info{
-      color: black;
-      background-color: rgba(255, 200, 56, 1);
-      width: 100%;
-      height: 25%;
-      padding: 50px;
-      clip-path: url(#infoClip);
-    }
-    
-    .garbage{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-      width: 27%;
-    }
-
-    ol{
-      padding-left: 23px;
-      font-size: 1vw;
-    }
-
-    #header_2{
-      height: 100%;
-      clip-path: url(#header2ClipPath);
-    }
-    .ockontovka svg{
-      z-index: 1;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
@@ -286,18 +15,33 @@
       <span></span>
       <span></span>
     </div>
-
-
   </div>
 
   <!-- Боковое меню -->
   <div id="sidebar">
-    <button class="face-btn" data-face="front">Front</button>
-    <button class="face-btn" data-face="back">Back</button>
-    <button class="face-btn" data-face="right">Right</button>
-    <button class="face-btn" data-face="left">Left</button>
-    <button class="face-btn" data-face="top">Top</button>
-    <button class="face-btn" data-face="bottom">Bottom</button>
+    <div id="likemen"><strong id="men">МЕНЮ</strong></div>
+    <div class="navigation">
+    <div class="category" id="category_1"><button type="button" class="face-btn" data-face="front">01</button><strong>ГЛАВНАЯ</strong></div>
+    <div class="category"><strong>УСЛУГИ:</strong></div>
+    <div id="page">
+    <button type="button" class="face-btn" data-face="back">02</button>
+    <p>Маркетинговые материалы</p>
+    </div>
+    <div id="page">
+    <button type="button" class="face-btn" data-face="right">03</button>
+    <p>Технологическая документация</p>
+    </div>
+    <div id="page">
+    <div id="groupka">
+    <button type="button" class="face-btn" data-face="left">04</button>
+    <button type="button" class="face-btn" data-face="top">05</button>
+    </div>
+    <p>Обучающие материалы и курсы</p>
+    </div>
+    <div class="category" id="category_1">
+    <button type="button" class="face-btn" data-face="bottom">06</button><strong>КОНТАКТЫ</strong>
+  </div>
+  </div>
   </div>
 
   <!-- Малый куб -->
@@ -308,53 +52,138 @@
     <div class="content-cube" id="content-cube">
       <div class="content-face" data-face="front">
         <div class="content" id="content_1">
-          <div class="garbage">
-          <div class="header">
+          <span id="container_1">
+          <div id="head_1">
             <h1>01</h1>
-            <strong>ОБЪЕДИНЯЕМ ДИЗАЙН С ТЕХНОЛОГИЧНОСТЬЮ</strong>
+            <h2>ОБЪЕДИНЯЕМ ДИЗАЙН С ТЕХНОЛОГИЧНОСТЬЮ</h2>
             <p>С 2020 года предоставляем услуги по созданию визуальных материалов для промышленных предприятий.
-              Готовим как маркетинговые материалы, так и технические и обучающие.
-              Осуществляем технические переводы с английского. А также занимаемся наполнением каталогов, баз данных.
-            </p>
+Готовим как маркетинговые материалы, так и технические и обучающие.
+Осуществляем технические переводы с английского. А также занимаемся наполнением каталогов, баз данных.</p>
           </div>
-
-          <div class="info">
-
-            <strong>КОНТАКТЫ:</strong>
-            <ol>
-              <li>example@gmail.com</li>
-              <li>+71523243123</li>
-              <li>Divizion.org</li>
-            </ol>
-
-          </div>
+          <div id="body_1"><h2>КОНТАКТЫ:</h2></div>
+        </span>
+        <svg width="43vw" height="16vh" style="margin: 2vw;" viewBox="0 0 1463 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M577.839 209.959V184.482C578.105 184.065 578.364 183.645 578.615 183.223C583.68 174.607 586.29 164.444 586.29 152.685C586.29 140.868 583.44 131.051 577.839 123.264V7.59081H629.694V129.025L708.829 7.58659H756.291V209.959H704.507V88.5165L625.376 209.959H577.839Z" fill="white"/>
+  <path d="M417.807 7.58656H505.773C529.407 7.58656 546.536 12.2302 557.268 21.5799C568.07 30.9464 573.438 44.2686 573.438 61.6343C573.435 72.0387 570.749 80.9479 565.378 88.3621C559.943 95.7819 552.8 101.172 543.781 104.398C555.474 107.083 564.78 112.549 571.7 120.797C578.57 128.942 582.075 139.579 582.075 152.685C582.075 164.444 579.47 174.607 574.4 183.223C569.339 191.756 561.441 198.413 550.709 202.998C539.909 207.636 525.899 209.956 508.677 209.959H417.807V7.58656ZM461.224 170.051H497.128C509.636 170.051 518.219 168.175 523.047 164.444C527.818 160.68 530.212 154.857 530.212 146.908C530.212 139.058 527.822 133.127 522.902 129.325C517.988 125.435 509.125 123.487 496.315 123.481H461.224V170.051ZM461.224 88.2163H493.113C504.272 88.2163 511.801 86.4072 515.672 82.9099C519.633 79.2959 521.645 74.1979 521.645 67.6952C521.645 60.9674 519.633 55.8735 515.672 52.5012C511.801 49.1248 504.359 47.4908 493.415 47.4908H461.224V88.2163ZM235.451 7.72408V7.58656H287.319V129.025L366.441 7.58656H413.907V209.959H362.123V88.5164L282.988 209.959H267.879V152.001H249.411V7.72408H235.451ZM837.289 209.959C818.443 209.959 802.725 207.183 790.059 201.576C777.382 196.032 767.836 187.954 761.448 177.466C760.726 176.28 760.042 175.071 759.394 173.84V139.73H804.5C805.035 145.874 806.45 151.184 808.69 155.611C810.851 160.03 814.274 163.477 818.891 165.866C823.425 168.267 829.627 169.534 837.289 169.534C848.772 169.534 857.11 167.362 862.325 163.177C867.46 158.9 870.074 152.923 870.074 145.203C870.074 140.184 869.111 135.778 867.182 131.885C865.299 128.062 861.731 125.069 856.596 122.964C851.381 120.797 844.001 119.742 834.398 119.742H815.987V84.4688H834.398C845.109 84.4688 852.576 82.1512 856.666 77.5159C860.831 72.9599 862.839 67.7202 862.839 61.9552C862.839 56.1736 861.13 51.1674 857.711 46.8906C854.285 42.6389 847.419 40.5296 837.289 40.5296C831.108 40.5296 826.038 41.4341 822.01 43.3015C817.991 45.1106 814.871 47.9494 812.714 51.6843C810.465 55.4275 809.204 60.217 808.756 65.9944H759.394V41.2007C762.874 30.8991 768.496 22.5873 776.262 16.2652C789.533 5.41066 809.864 0.020874 837.285 0.020874C864.727 0.020874 884.759 4.89796 897.424 14.6312C910.085 24.3728 916.416 38.7247 916.416 57.5951C916.416 68.2287 913.744 77.2076 908.521 84.6232C903.236 92.0429 895.711 97.4368 885.879 100.659C898.171 103.585 907.563 109.1 913.956 117.27C920.369 125.507 923.58 136.141 923.58 149.25C923.58 161.214 920.518 171.789 914.258 180.93C908.011 190.059 898.536 197.229 885.879 202.331C873.285 207.425 857.048 209.959 837.289 209.959Z" fill="white"/>
+  <path d="M919.344 209.959V179.613C925.015 170.776 927.795 160.647 927.795 149.25C927.795 136.97 924.974 126.858 919.344 118.862V69.6001C920.202 65.8625 920.63 61.8608 920.63 57.5951C920.63 52.693 920.202 48.098 919.344 43.8101V7.58655H971.208V129.025L1050.34 7.58655H1097.8V209.959H1046.02V88.5164L966.885 209.959H919.344ZM1190.78 209.959C1177.74 209.959 1165.22 208 1153.37 204.178C1141.44 200.288 1131.02 194.228 1122 185.995C1113.38 178.033 1106.52 167.812 1101.38 155.395V53.3474C1106.52 41.3507 1113.38 31.48 1122 23.7476C1131.02 15.6608 1141.44 9.67078 1153.37 5.84834C1165.22 1.95505 1177.74 0 1190.77 0C1204.19 0 1216.78 1.95921 1228.48 5.84834C1240.18 9.67078 1250.54 15.6608 1259.56 23.7476C1268.57 31.826 1275.64 42.2345 1280.86 54.969C1285.99 67.6951 1288.6 82.9724 1288.6 100.638V106.482C1288.6 124.748 1285.99 140.538 1280.86 153.715C1275.64 166.895 1268.56 177.683 1259.56 185.995C1250.54 194.226 1240.18 200.287 1228.48 204.178C1216.78 208.004 1204.19 209.959 1190.77 209.959M1190.48 166.587C1198.36 166.587 1205.6 164.815 1212.38 161.201C1219.09 157.691 1224.46 151.635 1228.63 143.01C1232.71 134.486 1234.81 122.276 1234.81 106.482V100.638C1234.81 85.661 1232.71 73.9895 1228.63 65.6776C1224.46 57.3616 1219.09 51.5966 1212.38 48.3119C1205.6 45.0856 1198.37 43.435 1190.48 43.435C1183.03 43.435 1175.86 45.0856 1169.16 48.3119C1162.46 51.5966 1157.03 57.3616 1152.77 65.6776C1148.51 73.9895 1146.44 85.661 1146.44 100.638V106.482C1146.44 122.281 1148.52 134.486 1152.77 143.01C1157.03 151.635 1162.46 157.691 1169.16 161.201C1175.86 164.815 1183.03 166.587 1190.48 166.587Z" fill="white"/>
+  <path d="M1284.36 209.959V155.457C1284.6 154.882 1284.83 154.301 1285.06 153.715C1290.2 140.542 1292.81 124.748 1292.81 106.482V100.638C1292.81 82.9724 1290.2 67.6951 1285.07 54.9648L1284.36 53.285V7.58656H1336.23V84.4688H1411.03V7.58656H1462.81V209.959H1411.03V127.241H1336.23V209.959H1284.36ZM194.892 209.959L120.387 149.35L212.967 7.72408H244.511V152.001H262.975V209.959H194.892ZM187.097 209.959H154.76L80.255 149.35L172.839 7.72408H205.176L112.592 149.354L187.097 209.959ZM146.97 209.959H114.633L40.1275 149.35L132.712 7.72408H165.044L72.4642 149.354L146.97 209.959ZM106.842 209.959H74.5053L0 149.35L92.5798 7.72408H124.917L32.3327 149.354L106.842 209.959ZM197.688 185.928V80.563L152.719 149.354L197.688 185.928Z" fill="white"/>
+  </svg>
         </div>
-        </div>
+
       </div>
       <div class="content-face" data-face="back">
-        <div class="content" id="content_2"><div class="garbage">
-          <div class="ockontovka">
-          <div class="header" id="header_2">
-            <h1>02</h1>
-            <strong>ПОДГОТОВКА МАРКЕТИНГОВЫХ МАТЕРИАЛОВ</strong>
-            <p>Маркетинговая продукция позволяет улучшить коммуникацию как внутри вашей организации, так и за ее пределами, увеличить приток клиентов и сделать вас узнаваемыми в вашей нише. У нас вы сможете заказать широкую номенклатуру материалов: 
-              </p>
-              
-              <svg  viewBox="0 0 777 205" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M776.407 0.508194C776.407 21.6838 768.878 39.9248 753.97 54.8977L627.049 182.368C612.141 197.345 593.974 204.902 572.886 204.902H0.82959V187.324H572.894C581.212 187.324 588.815 185.894 595.659 183.047C602.441 180.229 608.8 175.849 614.681 169.946L741.601 42.4717L776.407 0.508194Z" fill="#FFC838"/>
-  </svg>
-            </div>
-</div>
+        <div class="content" id="content_2">
+        <div id="container_2">
+          <div class="dop_lec2">
+           <div class="header" id="header_2">
+                <h1>02</h1>
+                <h2>ПОДГОТОВКА МАРКЕТИНГОВЫХ МАТЕРИАЛОВ</h2>
+                <p>Маркетинговая продукция позволяет улучшить коммуникацию как внутри вашей организации, так и за ее пределами, увеличить приток клиентов и сделать вас узнаваемыми в вашей нише. У нас вы сможете заказать широкую номенклатуру материалов:</p>
+              </div>
+              <div id="material">
+            <p>Все материалы готовятся в одном из двух возможных исполнений: для электронного использования и для печати в типографии.</p><p>Электронная версия включает в себя использование цветовой палитры RGB, вшивание внутренних (переход со страницы на страницу) и внешних (переход на сайт) ссылок, защиту от копирования.</p><p>Печатная версия готовится под ключ - готовый файл вам нужно просто отправить в типографию и заказать необходимый вам тираж.</p>
+            <svg width="5vw" height="5vw" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 50.6879V38.0993C0 37.5533 0.445984 37.1072 0.9961 37.1072H13.8529C14.6323 33.8267 15.9242 30.7463 17.6454 27.9576L8.55181 18.8621C8.16423 18.4744 8.16423 17.8408 8.55181 17.4532L17.4496 8.55361C17.8371 8.16595 18.4706 8.16595 18.854 8.55361L27.9517 17.6491C30.7398 15.9275 33.8197 14.6353 37.0995 13.8558V0.996254C37.0995 0.446022 37.5455 7.62939e-06 38.0914 7.62939e-06H50.6774C51.2233 7.62939e-06 51.6735 0.446022 51.6735 0.996254V13.8558C54.9492 14.6353 58.029 15.9275 60.8213 17.6491L69.9147 8.55361C70.3023 8.16595 70.9316 8.16595 71.3192 8.55361L80.2212 17.4532C80.6088 17.8408 80.6088 18.4744 80.2212 18.8621L71.1276 27.9534C72.8446 30.7462 74.1366 33.8308 74.92 37.1072H87.7769C88.3228 37.1072 88.7688 37.5533 88.7688 38.0993V50.6879C88.7688 51.2381 88.3228 51.6842 87.7769 51.6842H74.92C74.1366 54.9648 72.8446 58.041 71.1276 60.8339L80.2212 69.9294C80.6088 70.317 80.6088 70.9464 80.2212 71.3341L71.3192 80.2378C70.9316 80.6255 70.3023 80.6255 69.9147 80.2378L60.8213 71.1424C58.029 72.8598 54.9492 74.1519 51.6735 74.9356V87.7952C51.6735 88.3412 51.2233 88.7872 50.6774 88.7872H38.0914C37.5496 88.7872 37.0995 88.3412 37.0995 87.7952V74.9315C33.8197 74.152 30.7398 72.8597 27.9517 71.1382L18.854 80.2378C18.4706 80.6255 17.8371 80.6255 17.4496 80.2378L8.55181 71.3341C8.16423 70.9464 8.16423 70.317 8.55181 69.9294L17.6454 60.8339C15.9242 58.041 14.6323 54.9648 13.8529 51.6842H0.9961C0.445984 51.6842 0 51.2381 0 50.6879ZM44.3845 31.8342C51.3234 31.8342 56.9453 37.4574 56.9453 44.3936C56.9453 51.3299 51.3193 56.9573 44.3845 56.9573C37.4497 56.9573 31.8276 51.3299 31.8276 44.3936C31.8276 37.4574 37.4497 31.8342 44.3845 31.8342Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M80.2504 53.5601V53.3267H76.187C76.037 53.8547 75.8758 54.3771 75.7036 54.8939C75.4618 55.6193 75.1952 56.3321 74.9035 57.0323C74.6117 57.7438 74.2963 58.4357 73.9573 59.1082C73.7184 59.5918 73.4601 60.0781 73.1823 60.5672L78.9584 66.3446C80.9172 67.0032 82.6092 68.2621 83.8095 69.9003C85.0181 71.551 85.7349 73.5852 85.7349 75.7861C85.7349 78.5372 84.6179 81.03 82.8176 82.8307C81.013 84.6356 78.525 85.7486 75.7702 85.7486C73.5697 85.7486 71.536 85.0358 69.8857 83.827C68.252 82.6265 66.9934 80.9382 66.3308 78.9791L60.5545 73.2016C60.0655 73.4795 59.5794 73.7366 59.096 73.9728C58.4375 74.3063 57.747 74.6217 57.0246 74.919C56.3328 75.2053 55.6188 75.472 54.8825 75.7194C54.3657 75.8917 53.8434 76.0528 53.3155 76.2029V80.2713H54.1948L54.3449 80.9007C54.6227 82.054 54.9798 83.16 55.416 84.2188C55.8661 85.3026 56.3939 86.3363 56.9996 87.3201L57.3455 87.8745L50.3357 94.8858L56.6745 101.222L63.6844 94.2146L64.2345 94.5523C65.232 95.1664 66.2683 95.6972 67.3435 96.1446C68.4049 96.5837 69.5092 96.9408 70.6567 97.2159L71.286 97.366V107.278H80.2504V97.366L80.8839 97.2159C82.0369 96.938 83.1426 96.5809 84.2012 96.1446C85.2848 95.6944 86.3183 95.1664 87.3018 94.5606L87.8562 94.2146L94.8659 101.222L101.201 94.8858L94.1992 87.8745L94.5326 87.3201C95.1466 86.328 95.6772 85.2928 96.1245 84.2146C96.5663 83.153 96.9234 82.0484 97.1956 80.9007L97.3456 80.2713H107.256V71.305H97.3456L97.1956 70.6714C96.9178 69.5182 96.5607 68.4135 96.1245 67.3575C95.6716 66.2682 95.1439 65.2331 94.5409 64.2521L94.195 63.6976L101.205 56.6864L94.8659 50.3504L87.8562 57.3533L87.3018 57.0115C86.3183 56.4057 85.2848 55.8777 84.2012 55.4275C83.1426 54.9885 82.0369 54.6313 80.8839 54.3562L80.2504 54.2062V53.5601Z" fill="#FFA32E" fill-opacity="0.47"/>
+</svg>
+          <ul>
+            <li><strong>ВЕРСТКА</strong></li>
+            <li><strong>ДИЗАЙН</strong></li>
+            <li><strong>НАПОЛНЕНИЕ РЕДАКТУРА</strong></li>
+            <li><strong>ПЕРЕВОД(АНГЛИЙСКИЙ)</strong></li>
+            <li><strong>ПОДГОТОВКА К ПЕЧАТИ</strong></li>
+          </ul>
+          </div>
+
+          </div>
+          <div id="body_2">
+            <div class="containerB"><strong>ПРЕЗЕНТАЦИИ</strong></div>
+            <div class="containerB"><strong>Отчеты, доклады</strong></div>
+            <div class="containerB"><strong>Рекламные проспекты, брошюры</strong></div>
+            <div class="containerB"><strong>Плакаты</strong></div>
+            <div class="containerB"><strong>Баннеры, выставочные стенды</strong></div>
+            <div class="containerB"><strong>Листовки, флаеры, коммерческие предложения</strong></div>
+          </div>
         </div>
       </div>
       </div>
       <div class="content-face" data-face="right">
-        <div class="content" id="content_3">content            
-          
-</div>
+        <div class="content" id="content_3">
+          <div id="container_3">
+          <div class="dop_lec2">
+           <div class="header" id="header_3">
+                <h1>03</h1>
+                <h2>ВИЗУАЛИЗАЦИЯ ТЕХНИЧЕСКОЙ ДОКУМЕНТАЦИИ</h2>
+                <p>Перевод строгой технической документации в плоскость дизайна позволяет улучшить понимание и объяснение конструкторских и технических особенностей объектов. Чаще всего, данное направление востребовано для обучения персонала и ведения продаж с клиентами. В частности, мы предлагаем создание:  </p>
+              </div>
+          </div>
+          <div class="sub3">
+          <div id="body_3">
+            <div class="containerB"><strong>КАТАЛОГОВ</strong></div>
+            <div class="containerB"><strong>СХЕМ</strong></div>
+            <div class="containerB"><strong>ИНСТРУКЦИЙ</strong></div>
+            <div class="containerB"><strong>Планов</strong></div>
+          </div>
+          <div>
+          <div id="material_3">
+            <svg width="5vw" height="5vw" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 50.6879V38.0993C0 37.5533 0.445984 37.1072 0.9961 37.1072H13.8529C14.6323 33.8267 15.9242 30.7463 17.6454 27.9576L8.55181 18.8621C8.16423 18.4744 8.16423 17.8408 8.55181 17.4532L17.4496 8.55361C17.8371 8.16595 18.4706 8.16595 18.854 8.55361L27.9517 17.6491C30.7398 15.9275 33.8197 14.6353 37.0995 13.8558V0.996254C37.0995 0.446022 37.5455 7.62939e-06 38.0914 7.62939e-06H50.6774C51.2233 7.62939e-06 51.6735 0.446022 51.6735 0.996254V13.8558C54.9492 14.6353 58.029 15.9275 60.8213 17.6491L69.9147 8.55361C70.3023 8.16595 70.9316 8.16595 71.3192 8.55361L80.2212 17.4532C80.6088 17.8408 80.6088 18.4744 80.2212 18.8621L71.1276 27.9534C72.8446 30.7462 74.1366 33.8308 74.92 37.1072H87.7769C88.3228 37.1072 88.7688 37.5533 88.7688 38.0993V50.6879C88.7688 51.2381 88.3228 51.6842 87.7769 51.6842H74.92C74.1366 54.9648 72.8446 58.041 71.1276 60.8339L80.2212 69.9294C80.6088 70.317 80.6088 70.9464 80.2212 71.3341L71.3192 80.2378C70.9316 80.6255 70.3023 80.6255 69.9147 80.2378L60.8213 71.1424C58.029 72.8598 54.9492 74.1519 51.6735 74.9356V87.7952C51.6735 88.3412 51.2233 88.7872 50.6774 88.7872H38.0914C37.5496 88.7872 37.0995 88.3412 37.0995 87.7952V74.9315C33.8197 74.152 30.7398 72.8597 27.9517 71.1382L18.854 80.2378C18.4706 80.6255 17.8371 80.6255 17.4496 80.2378L8.55181 71.3341C8.16423 70.9464 8.16423 70.317 8.55181 69.9294L17.6454 60.8339C15.9242 58.041 14.6323 54.9648 13.8529 51.6842H0.9961C0.445984 51.6842 0 51.2381 0 50.6879ZM44.3845 31.8342C51.3234 31.8342 56.9453 37.4574 56.9453 44.3936C56.9453 51.3299 51.3193 56.9573 44.3845 56.9573C37.4497 56.9573 31.8276 51.3299 31.8276 44.3936C31.8276 37.4574 37.4497 31.8342 44.3845 31.8342Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M80.2504 53.5601V53.3267H76.187C76.037 53.8547 75.8758 54.3771 75.7036 54.8939C75.4618 55.6193 75.1952 56.3321 74.9035 57.0323C74.6117 57.7438 74.2963 58.4357 73.9573 59.1082C73.7184 59.5918 73.4601 60.0781 73.1823 60.5672L78.9584 66.3446C80.9172 67.0032 82.6092 68.2621 83.8095 69.9003C85.0181 71.551 85.7349 73.5852 85.7349 75.7861C85.7349 78.5372 84.6179 81.03 82.8176 82.8307C81.013 84.6356 78.525 85.7486 75.7702 85.7486C73.5697 85.7486 71.536 85.0358 69.8857 83.827C68.252 82.6265 66.9934 80.9382 66.3308 78.9791L60.5545 73.2016C60.0655 73.4795 59.5794 73.7366 59.096 73.9728C58.4375 74.3063 57.747 74.6217 57.0246 74.919C56.3328 75.2053 55.6188 75.472 54.8825 75.7194C54.3657 75.8917 53.8434 76.0528 53.3155 76.2029V80.2713H54.1948L54.3449 80.9007C54.6227 82.054 54.9798 83.16 55.416 84.2188C55.8661 85.3026 56.3939 86.3363 56.9996 87.3201L57.3455 87.8745L50.3357 94.8858L56.6745 101.222L63.6844 94.2146L64.2345 94.5523C65.232 95.1664 66.2683 95.6972 67.3435 96.1446C68.4049 96.5837 69.5092 96.9408 70.6567 97.2159L71.286 97.366V107.278H80.2504V97.366L80.8839 97.2159C82.0369 96.938 83.1426 96.5809 84.2012 96.1446C85.2848 95.6944 86.3183 95.1664 87.3018 94.5606L87.8562 94.2146L94.8659 101.222L101.201 94.8858L94.1992 87.8745L94.5326 87.3201C95.1466 86.328 95.6772 85.2928 96.1245 84.2146C96.5663 83.153 96.9234 82.0484 97.1956 80.9007L97.3456 80.2713H107.256V71.305H97.3456L97.1956 70.6714C96.9178 69.5182 96.5607 68.4135 96.1245 67.3575C95.6716 66.2682 95.1439 65.2331 94.5409 64.2521L94.195 63.6976L101.205 56.6864L94.8659 50.3504L87.8562 57.3533L87.3018 57.0115C86.3183 56.4057 85.2848 55.8777 84.2012 55.4275C83.1426 54.9885 82.0369 54.6313 80.8839 54.3562L80.2504 54.2062V53.5601Z" fill="#FFA32E" fill-opacity="0.47"/>
+</svg>
+          <ul id="ul_3">
+            <li><strong>ТЕХНИЧЕСКАЯ ДОСТОВЕРНОСТЬ</strong></li>
+            <li><strong>ВЕРСТКА</strong></li>
+            <li><strong>ДИЗАЙН</strong></li>
+            <li><strong>НАПОЛНЕНИЕ И РЕДАКТУРА</strong></li>
+            <li><strong>ПЕРЕВОД(АНГЛИЙСКИЙ)</strong></li>
+            <li><strong>ПОДГОТОВКА К ПЕЧАТИ</strong></li>
+          </ul>
+        </div>
+        <p>*Создание иллюстрации по фотографии/чертежу с точным соблюдением всех конструктивных особенностей.</p>
+        </div>    
+      </div>
+        </div>
+        </div>
       </div>
       <div class="content-face" data-face="left">
-        <div class="content" id="content_4">content</div>
+        <div class="content" id="content_4">
+                    <div id="container_3">
+          <div class="dop_lec2">
+           <div class="header" id="header_3">
+                <h1>04</h1>
+                <h2>Создание обучающих материалов и курсов</h2>
+                <p>Внутрикорпоративные курсы позволяют поддерживать профессионализм среди ваших сотрудников, а также поднимать их квалификацию в узких направлениях вашей отрасли. В наши услуги входит создание:</p>
+              </div>
+                        <div id="material_3">
+            <svg width="5vw" height="5vw" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 50.6879V38.0993C0 37.5533 0.445984 37.1072 0.9961 37.1072H13.8529C14.6323 33.8267 15.9242 30.7463 17.6454 27.9576L8.55181 18.8621C8.16423 18.4744 8.16423 17.8408 8.55181 17.4532L17.4496 8.55361C17.8371 8.16595 18.4706 8.16595 18.854 8.55361L27.9517 17.6491C30.7398 15.9275 33.8197 14.6353 37.0995 13.8558V0.996254C37.0995 0.446022 37.5455 7.62939e-06 38.0914 7.62939e-06H50.6774C51.2233 7.62939e-06 51.6735 0.446022 51.6735 0.996254V13.8558C54.9492 14.6353 58.029 15.9275 60.8213 17.6491L69.9147 8.55361C70.3023 8.16595 70.9316 8.16595 71.3192 8.55361L80.2212 17.4532C80.6088 17.8408 80.6088 18.4744 80.2212 18.8621L71.1276 27.9534C72.8446 30.7462 74.1366 33.8308 74.92 37.1072H87.7769C88.3228 37.1072 88.7688 37.5533 88.7688 38.0993V50.6879C88.7688 51.2381 88.3228 51.6842 87.7769 51.6842H74.92C74.1366 54.9648 72.8446 58.041 71.1276 60.8339L80.2212 69.9294C80.6088 70.317 80.6088 70.9464 80.2212 71.3341L71.3192 80.2378C70.9316 80.6255 70.3023 80.6255 69.9147 80.2378L60.8213 71.1424C58.029 72.8598 54.9492 74.1519 51.6735 74.9356V87.7952C51.6735 88.3412 51.2233 88.7872 50.6774 88.7872H38.0914C37.5496 88.7872 37.0995 88.3412 37.0995 87.7952V74.9315C33.8197 74.152 30.7398 72.8597 27.9517 71.1382L18.854 80.2378C18.4706 80.6255 17.8371 80.6255 17.4496 80.2378L8.55181 71.3341C8.16423 70.9464 8.16423 70.317 8.55181 69.9294L17.6454 60.8339C15.9242 58.041 14.6323 54.9648 13.8529 51.6842H0.9961C0.445984 51.6842 0 51.2381 0 50.6879ZM44.3845 31.8342C51.3234 31.8342 56.9453 37.4574 56.9453 44.3936C56.9453 51.3299 51.3193 56.9573 44.3845 56.9573C37.4497 56.9573 31.8276 51.3299 31.8276 44.3936C31.8276 37.4574 37.4497 31.8342 44.3845 31.8342Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M80.2504 53.5601V53.3267H76.187C76.037 53.8547 75.8758 54.3771 75.7036 54.8939C75.4618 55.6193 75.1952 56.3321 74.9035 57.0323C74.6117 57.7438 74.2963 58.4357 73.9573 59.1082C73.7184 59.5918 73.4601 60.0781 73.1823 60.5672L78.9584 66.3446C80.9172 67.0032 82.6092 68.2621 83.8095 69.9003C85.0181 71.551 85.7349 73.5852 85.7349 75.7861C85.7349 78.5372 84.6179 81.03 82.8176 82.8307C81.013 84.6356 78.525 85.7486 75.7702 85.7486C73.5697 85.7486 71.536 85.0358 69.8857 83.827C68.252 82.6265 66.9934 80.9382 66.3308 78.9791L60.5545 73.2016C60.0655 73.4795 59.5794 73.7366 59.096 73.9728C58.4375 74.3063 57.747 74.6217 57.0246 74.919C56.3328 75.2053 55.6188 75.472 54.8825 75.7194C54.3657 75.8917 53.8434 76.0528 53.3155 76.2029V80.2713H54.1948L54.3449 80.9007C54.6227 82.054 54.9798 83.16 55.416 84.2188C55.8661 85.3026 56.3939 86.3363 56.9996 87.3201L57.3455 87.8745L50.3357 94.8858L56.6745 101.222L63.6844 94.2146L64.2345 94.5523C65.232 95.1664 66.2683 95.6972 67.3435 96.1446C68.4049 96.5837 69.5092 96.9408 70.6567 97.2159L71.286 97.366V107.278H80.2504V97.366L80.8839 97.2159C82.0369 96.938 83.1426 96.5809 84.2012 96.1446C85.2848 95.6944 86.3183 95.1664 87.3018 94.5606L87.8562 94.2146L94.8659 101.222L101.201 94.8858L94.1992 87.8745L94.5326 87.3201C95.1466 86.328 95.6772 85.2928 96.1245 84.2146C96.5663 83.153 96.9234 82.0484 97.1956 80.9007L97.3456 80.2713H107.256V71.305H97.3456L97.1956 70.6714C96.9178 69.5182 96.5607 68.4135 96.1245 67.3575C95.6716 66.2682 95.1439 65.2331 94.5409 64.2521L94.195 63.6976L101.205 56.6864L94.8659 50.3504L87.8562 57.3533L87.3018 57.0115C86.3183 56.4057 85.2848 55.8777 84.2012 55.4275C83.1426 54.9885 82.0369 54.6313 80.8839 54.3562L80.2504 54.2062V53.5601Z" fill="#FFA32E" fill-opacity="0.47"/>
+</svg>
+          <ul id="ul_3">
+            <li><strong>ТЕХНИЧЕСКАЯ ДОСТОВЕРНОСТЬ</strong></li>
+            <li><strong>ВЕРСТКА</strong></li>
+            <li><strong>ДИЗАЙН</strong></li>
+            <li><strong>НАПОЛНЕНИЕ И РЕДАКТУРА</strong></li>
+            <li><strong>ПЕРЕВОД(АНГЛИЙСКИЙ)</strong></li>
+            <li><strong>ПОДГОТОВКА К ПЕЧАТИ</strong></li>
+          </ul>
+        </div>
+
+          </div>
+          <div class="sub3">
+          <div id="body_3">
+            <div class="containerB"><strong>КАТАЛОГОВ</strong></div>
+            <div class="containerB"><strong>СХЕМ</strong></div>
+            <div class="containerB"><strong>ИНСТРУКЦИЙ</strong></div>
+            <div class="containerB"><strong>Планов</strong></div>
+          </div>
+          <div>
+
+        <p>*Создание иллюстрации по фотографии/чертежу с точным соблюдением всех конструктивных особенностей.</p>
+        </div>
+      </div>
+        </div>
+        </div>
       </div>
       <div class="content-face" data-face="top">
         <div class="content" id="content_5">content</div>
@@ -366,327 +195,39 @@
   </div>
 
   <!-- Подключение библиотек -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.min.js "></script> 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js "></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r99/three.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script> 
+  <script src="js/scripts.js"></script>
 
-  <!-- JavaScript -->
-<script>
-  // === Three.js setup ===
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(200, 200);
-  const controlContainer = document.getElementById("control");
-  controlContainer.appendChild(renderer.domElement);
-  camera.position.z = 5;
+  <!-- SVG Clipping Paths -->
+  <svg width="0" height="0">
+    <defs>
+      <clippath id="customCliper" clipPathUnits="objectBoundingBox">
+        <path d="M0.001 0 H1 V1 C1 0.5 0.989 0.849 0.972 0.864 L0.675 1 C0.652 1.031 0.622 1.048 0.599 1.048 H0 L0 0.984 H0.599 C0.622 0.984 0.652 0.991 0.675 0.998 Z"/>
+      </clippath>
+    </defs>
+  </svg>
 
-  // === Создание граней куба ===
-  const planeGeometry = new THREE.PlaneGeometry(1.8, 1.8);
-  const materials = [];
-  for (let i = 1; i <= 6; i++) {
-    const canvas = document.createElement("canvas");
-    const size = 512;
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#34495e";
-    ctx.fillRect(0, 0, size, size);
-    ctx.font = "bold 200px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillStyle = "#ecf0f1";
-    ctx.fillText(i.toString().padStart(2, "0"), size / 2, size / 2);
-    materials.push(new THREE.MeshStandardMaterial({
-      map: new THREE.CanvasTexture(canvas),
-      side: THREE.DoubleSide
-    }));
-  }
+  <svg width="0" height="0">
+    <defs>
+        <path d="M0.001,0 H1 V0.82 C1,0.84 0.99,0.86 0.97,0.87 L0.81,0.98 C0.79,0.99 0.76,1 0.73,1 H0.001 V0 Z"/>
+    </defs>
+  </svg>
 
-  const cubeGroup = new THREE.Group();
-  const positions = [
-    [0, 0, 0.9], [0, 0, -0.9], [0.9, 0, 0], 
-    [-0.9, 0, 0], [0, 0.9, 0], [0, -0.9, 0]
-  ];
-  const rotations = [
-    [0, 0, 0], [0, Math.PI, 0], [0, Math.PI / 2, 0], 
-    [0, -Math.PI / 2, 0], [Math.PI / 2, 0, 0], [-Math.PI / 2, 0, 0]
-  ];
-  const faceNames = ["front", "back", "right", "left", "top", "bottom"];
+  <svg width="0" height="0">
+    <defs>
+      <clippath id="infoClip" clipPathUnits="objectBoundingBox">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.999060 0.998888 V0.601171 C0.999060 0.538865, 0.989126 0.485241, 0.970203 0.441179 L0.806678 0.066266 C0.787494 0.022215, 0.764131 0, 0.737000 0 H0.001124 V0.499444 V0.998888 H0.999060 Z"/>
+      </clippath>
+    </defs>
+  </svg>
 
-  positions.forEach((pos, i) => {
-    const mesh = new THREE.Mesh(planeGeometry, materials[i]);
-    mesh.position.set(...pos);
-    mesh.userData = { face: faceNames[i] };
-    if ([4, 5].includes(i)) {
-      mesh.rotation.x = rotations[i][0];
-      mesh.scale.y = -1;
-    } else {
-      mesh.rotation.y = rotations[i][1];
-    }
-    cubeGroup.add(mesh);
-  });
-  scene.add(cubeGroup);
-
-  // === Освещение ===
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-  const light = new THREE.DirectionalLight(0xffffff, 0.6);
-  light.position.set(5, 5, 5);
-  scene.add(light);
-
-  // === Управление состоянием ===
-  let isAnimating = false;
-  let currentFace = "front";
-  let isDragging = false;
-  let isTouching = false;
-  let touchStartTime = 0;
-  let previousPosition = { x: 0, y: 0 };
-  const TAP_MAX_DURATION = 300;
-  const TAP_MAX_MOVE = 15;
-
-  // Целевые повороты для граней
-  const faceRotations = {
-    front: { x: 0, y: 0 },
-    right: { x: 0, y: -Math.PI / 2 },
-    back: { x: 0, y: Math.PI },
-    left: { x: 0, y: Math.PI / 2 },
-    top: { x: Math.PI / 2, y: 0 },
-    bottom: { x: -Math.PI / 2, y: 0 }
-  };
-
-  // Функции коррекции угла
-  function adjustAngle(current, target) {
-    let delta = target - current;
-    const twoPi = Math.PI * 2;
-    delta = ((delta % twoPi) + twoPi) % twoPi;
-    if (delta > Math.PI) delta -= twoPi;
-    return current + delta;
-  }
-
-  // === Анимация перехода к грани ===
-  function animateToFace(targetFace) {
-    if (isAnimating || targetFace === currentFace) return;
-    
-    isAnimating = true;
-    const card = document.getElementById('content-cube');
-    const target = faceRotations[targetFace];
-    
-    const adjustedX = adjustAngle(cubeGroup.rotation.x, target.x);
-    const adjustedY = adjustAngle(cubeGroup.rotation.y, target.y);
-    const rotateXDeg = -target.x * (180 / Math.PI);
-    const rotateYDeg = target.y * (180 / Math.PI);
-
-    anime.timeline({
-      easing: 'easeInOutQuad',
-      complete: () => {
-        isAnimating = false;
-        currentFace = targetFace;
-      }
-    })
-    .add({
-      targets: card,
-      scale: 0.4,
-      duration: 300,
-      easing: 'easeInQuad'
-    })
-    .add({
-      targets: [cubeGroup.rotation, card],
-      x: [cubeGroup.rotation.x, adjustedX],
-      y: [cubeGroup.rotation.y, adjustedY],
-      rotateX: rotateXDeg,
-      rotateY: rotateYDeg,
-      duration: 600,
-      easing: 'easeOutBack',
-      change: () => renderer.render(scene, camera)
-    })
-    .add({
-      targets: card,
-      scale: 1,
-      duration: 300,
-      easing: 'easeOutQuad'
-    });
-  }
-
-  // === Обработка кликов мышью ===
-  function handleMouseDown(e) {
-    if (isAnimating) return;
-    isDragging = true;
-    previousPosition = { x: e.clientX, y: e.clientY };
-    e.preventDefault();
-  }
-
-  function handleMouseMove(e) {
-    if (!isDragging || isAnimating) return;
-    
-    const dx = e.clientX - previousPosition.x;
-    const dy = e.clientY - previousPosition.y;
-    cubeGroup.rotation.y += dx * 0.01;
-    cubeGroup.rotation.x += dy * 0.01;
-    previousPosition = { x: e.clientX, y: e.clientY };
-    e.preventDefault();
-  }
-
-  function handleMouseUp() {
-    isDragging = false;
-  }
-
-  function handleMouseClick(e) {
-    if (isAnimating || isDragging) return;
-    
-    const mouse = new THREE.Vector2(
-      ((e.clientX - controlContainer.getBoundingClientRect().left) / controlContainer.clientWidth) * 2 - 1,
-      -((e.clientY - controlContainer.getBoundingClientRect().top) / controlContainer.clientHeight) * 2 + 1
-    );
-    
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(cubeGroup.children, true);
-    
-    if (intersects.length > 0) {
-      const clickedFace = intersects[0].object.userData.face;
-      if (clickedFace) animateToFace(clickedFace);
-    }
-  }
-
-  // === Обработка сенсорных событий ===
-  function handleTouchStart(e) {
-    if (isAnimating) return;
-    
-    isTouching = true;
-    touchStartTime = Date.now();
-    const touch = e.touches[0];
-    previousPosition = { x: touch.clientX, y: touch.clientY };
-    e.preventDefault();
-  }
-
-  function handleTouchMove(e) {
-    if (!isTouching || isAnimating) return;
-    
-    const touch = e.touches[0];
-    const dx = touch.clientX - previousPosition.x;
-    const dy = touch.clientY - previousPosition.y;
-    
-    if (Math.abs(dx) > TAP_MAX_MOVE || Math.abs(dy) > TAP_MAX_MOVE) {
-      isDragging = true;
-    }
-    
-    if (isDragging) {
-      cubeGroup.rotation.y += dx * 0.01;
-      cubeGroup.rotation.x += dy * 0.01;
-      previousPosition = { x: touch.clientX, y: touch.clientY };
-    }
-    
-    e.preventDefault();
-  }
-
-  function handleTouchEnd(e) {
-    if (!isTouching) return;
-    
-    if (!isDragging && Date.now() - touchStartTime < TAP_MAX_DURATION) {
-      const touch = e.changedTouches[0];
-      const rect = controlContainer.getBoundingClientRect();
-      const mouse = new THREE.Vector2(
-        ((touch.clientX - rect.left) / rect.width) * 2 - 1,
-        -((touch.clientY - rect.top) / rect.height) * 2 + 1
-      );
-      
-      const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(cubeGroup.children, true);
-      
-      if (intersects.length > 0) {
-        const clickedFace = intersects[0].object.userData.face;
-        if (clickedFace) animateToFace(clickedFace);
-      }
-    }
-    
-    isTouching = false;
-    isDragging = false;
-    e.preventDefault();
-  }
-
-  // === Настройка обработчиков ===
-  controlContainer.addEventListener("mousedown", handleMouseDown);
-  window.addEventListener("mousemove", handleMouseMove);
-  window.addEventListener("mouseup", handleMouseUp);
-  controlContainer.addEventListener("click", handleMouseClick);
-  
-  controlContainer.addEventListener("touchstart", handleTouchStart, { passive: false });
-  controlContainer.addEventListener("touchmove", handleTouchMove, { passive: false });
-  controlContainer.addEventListener("touchend", handleTouchEnd);
-
-  // Обработчики кнопок меню
-  document.querySelectorAll('.face-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      animateToFace(button.dataset.face);
-    });
-  });
-
-  // Бургер-меню
-  const burger = document.getElementById('burger');
-  const sidebar = document.getElementById('sidebar');
-  burger.addEventListener('click', () => {
-    sidebar.classList.toggle('active');
-    burger.classList.toggle('toggle');
-  });
-
-  // === Анимация рендера ===
-  function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-  }
-  animate();
-</script>
-
-
-<svg width="0" height="0">
-  <defs>
-    <clipPath id="customCliper" clipPathUnits="objectBoundingBox">
-      <path d="
-        M0.001 0 H1 V1 C1 0.5 0.989 0.849 0.972 0.864 
-        L0.675 1 C0.652 1.031 0.622 1.048 0.599 1.048 H0 
-        L0 0.984 H0.599 C0.622 0.984 0.652 0.991 0.675 0.998 
-       Z
-      "/>
-        </clipPath>
-  </defs>
-</svg>
-
-
-<svg width="0" height="0">
-  <defs>
-    <clipPath id="headerClip" clipPathUnits="objectBoundingBox">
-      <!-- Новые координаты (примерные, уточните по вашей форме) -->
-      <path d="M0.001,0 H1 V0.82 C1,0.84 0.99,0.86 0.97,0.87 L0.81,0.98 C0.79,0.99 0.76,1 0.73,1 H0.001 V0 Z"/>
-    </clipPath>
-  </defs>
-</svg>
-
-
-            <svg width="0" height="0">
-  <defs>
-    <clipPath id="infoClip" clipPathUnits="objectBoundingBox">
-<path fill-rule="evenodd" clip-rule="evenodd" d="
-  M0.999060 0.998888
-  V0.601171
-  C0.999060 0.538865, 0.989126 0.485241, 0.970203 0.441179
-  L0.806678 0.066266
-  C0.787494 0.022215, 0.764131 0, 0.737000 0
-  H0.001124
-  V0.499444
-  V0.998888
-  H0.999060
-  Z"
-/>
-    </clipPath>
-  </defs>
-</svg>
-
-<svg width="0" height="0">
-  <defs>
-    <clipPath id="header2ClipPath" clipPathUnits="objectBoundingBox">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.00106 0H0.999V0.812C0.999 0.832 0.989 0.848 0.97 0.862L0.807 0.98C0.778 0.993 0.764 1 0.737 1H0.00106V0Z" />
-    </clipPath>
-  </defs>
-</svg>
+  <svg width="0" height="0">
+    <defs>
+      <clippath id="header2ClipPath" clipPathUnits="objectBoundingBox">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.00106 0H0.999V0.812C0.999 0.832 0.989 0.848 0.97 0.862L0.807 0.98C0.778 0.993 0.764 1 0.737 1H0.00106V0Z"/>
+      </clippath>
+    </defs>
+  </svg>
 </body>
 </html>
